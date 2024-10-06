@@ -57,18 +57,20 @@ Welcome to the **HotelMania** web application! This is a Next.js project designe
 cd hotelmania
 
 3. Install dependencies:
-
+```
 npm install
 # or
 yarn install
-
+```
 
 ### Running the Application
 ### Development Mode:
 
+```
 npm run dev
 # or
 yarn dev
+```
 
 
 Open http://localhost:3000 in your browser to see the application.
@@ -76,18 +78,18 @@ Open http://localhost:3000 in your browser to see the application.
 Production Mode:
 
 To build the application for production:
-
+```
 npm run build
 # or
 yarn build
-
+```
 
 To start the production server:
-
+```
 npm start
 # or
 yarn start
-
+```
 ### Project Structure
 ```
 ├── app
@@ -144,6 +146,7 @@ yarn start
 └── README.md
 ```
 ## Notable Files and Directories
+
 - app/: Contains the Next.js pages and global styles.
   - layout.tsx: The root layout component.
   - page.tsx: The main entry point of the application.
