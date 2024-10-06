@@ -28,7 +28,7 @@ const navbarItemsMobile: NavbarItems = {
 
 export function Navbar() {
 
-	const isDesktop = useMediaQuery('(min-width: 640px)', { initializeWithValue: false });
+	const isDesktop = useMediaQuery('(min-width: 900px)', { initializeWithValue: false });
 
 	if (isDesktop) {
 		return (

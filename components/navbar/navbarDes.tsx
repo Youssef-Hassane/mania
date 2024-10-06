@@ -5,11 +5,12 @@ import Link from "next/link";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Avatar } from "../ui/avatar";
-import { Avatar as AvatarI, AvatarFallback as AvatarFallbackI, AvatarImage as AvatarImageI } from "../ui/avatarImage";
-import { LogOut, MoreHorizontal, Settings, CircleUser, UserCog, UserRoundPlus, BadgeHelp, Hotel, Headset } from "lucide-react";
+import { Avatar as AvatarI } from "../ui/avatarImage";
+import { LogOut, UserCog, UserRoundPlus, Hotel, Headset } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from 'react';
 import { Separator } from "../ui/separator";
+
 
 interface NavbarProps {
 	navbarItems: NavbarItems;
