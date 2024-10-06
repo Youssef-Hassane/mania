@@ -89,7 +89,7 @@ npm start
 yarn start
 
 ### Project Structure
-
+```
 ├── app
 │   ├── Home.tsx
 │   ├── about
@@ -142,7 +142,7 @@ yarn start
 ├── package.json
 ├── tsconfig.json
 └── README.md
-
+```
 ## Notable Files and Directories
 - app/: Contains the Next.js pages and global styles.
   - layout.tsx: The root layout component.
