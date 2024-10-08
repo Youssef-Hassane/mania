@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Avatar } from "../ui/avatar";
 import { Avatar as AvatarI } from "../ui/avatarImage";
-import { LogOut, UserCog, UserRoundPlus, Hotel, Headset } from "lucide-react";
+import { LogOut, UserCog, UserRoundPlus, Hotel, Headset, Icon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from 'react';
 import { Separator } from "../ui/separator";
@@ -30,8 +30,9 @@ export function NavbarDes(props: NavbarProps) {
 				{/* <Image src="/logo-text.png" alt="logo" className='mx-3' width={100} height={100} priority/> */}
 
 				{/* logo */}
-				<AvatarI className={`rounded-none w-[75px] h-[75px]  items-center text-center border border-red-500`}>
-					<p className="w-[75px] text-white text-2xl">LOGO</p>
+				
+				<AvatarI className={`rounded-none w-auto h-[75px]  items-center text-center `}>
+					<p className="font-custom text-custom-light-apricot">HotelMania</p>
 					{/* <AvatarImageI src="/logo-text.png" alt="logo" /> */}
 					{/* <AvatarFallbackI></AvatarFallbackI> */}
 				</AvatarI>

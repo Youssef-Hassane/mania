@@ -8,7 +8,7 @@ import HotelManiaInfo from './hotelManiaInfo';
 
 export default function Footer() {
   return (
-    <footer className='w-full h-[400px] bottom-0 bg-custom-light-apricot'>
+    <footer className='w-full h-[400px] bottom-0 bg-custom-light-apricot border-t-2 border-custom-dark-gray'>
       <div className='flex flex-row gap-4 justify-between items-center mx-[150px] h-full'>
         <HotelManiaInfo />
         <QuickLinks />

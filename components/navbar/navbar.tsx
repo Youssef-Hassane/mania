@@ -32,7 +32,7 @@ export function Navbar() {
 
 	if (isDesktop) {
 		return (
-			<div>
+			<div className='h-[100px]'>
 				<NavbarDes navbarItems={navbarItems} />
 			</div>
 		);
