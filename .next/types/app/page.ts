@@ -1,4 +1,4 @@
-// File: /Users/Youssef_Hassane/Desktop/mania/app/page.tsx
+// File: /home/ahmed/ALXSE/Back_End/Project/mania/app/page.tsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
