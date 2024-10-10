@@ -19,7 +19,7 @@ const Card: React.FC<CardProps> = ({ imgSrc, imgAlt, title, description }) => {
         height={600}
         className="w-full h-auto"
       />
-      <div className="bg-orange-200 p-6 text-center text-black">
+      <div className="bg-custom-light-apricot p-6 text-center text-black">
         <h3 className="text-xl font-bold">{title}</h3>
         <p className="mt-4">{description}</p>
       </div>
