@@ -67,8 +67,8 @@ export function NavbarDes(props: NavbarProps) {
 						</PopoverTrigger>
 
 
-						<PopoverContent className='mb-2 w-56 p-3 rounded-sm mr-[80px]'>
-							<div className='space-y-1'>
+						<PopoverContent className='mb-2 w-56 p-3 rounded-sm mr-[80px] '>
+							<div className='space-y-1 text-white'>
 
 								<NavbarButton
 									size='sm'
@@ -76,8 +76,8 @@ export function NavbarDes(props: NavbarProps) {
 									onClick={() => { }}
 								>
 									<div className='flex justify-between '>
-										<LogOut className="group-hover:text-custom-light-apricot text-custom-dark-gray mt-[5px]" size={20} />
-										<p className={`text-custom-dark-gray group-hover:text-custom-light-apricot pl-2`}>Log In</p>
+										<LogOut className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Log In</p>
 									</div>
 								</NavbarButton>
 
@@ -87,8 +87,8 @@ export function NavbarDes(props: NavbarProps) {
 									onClick={() => { }}
 								>
 									<div className='flex justify-between '>
-										<UserRoundPlus className="group-hover:text-custom-light-apricot text-custom-dark-gray mt-[5px]" size={20} />
-										<p className={`text-custom-dark-gray group-hover:text-custom-light-apricot pl-2`}>Sign Out</p>
+										<UserRoundPlus className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Sign Out</p>
 									</div>
 								</NavbarButton>
 
@@ -100,8 +100,8 @@ export function NavbarDes(props: NavbarProps) {
 									onClick={() => { }}
 								>
 									<div className='flex justify-between '>
-										<Headset className="group-hover:text-custom-light-apricot text-custom-dark-gray mt-[5px]" size={20} />
-										<p className={`text-custom-dark-gray group-hover:text-custom-light-apricot pl-2`}>Help Center</p>
+										<Headset className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Help Center</p>
 									</div>
 								</NavbarButton>
 
@@ -111,8 +111,8 @@ export function NavbarDes(props: NavbarProps) {
 									onClick={() => { }}
 								>
 									<div className='flex justify-between '>
-										<Hotel className="group-hover:text-custom-light-apricot text-custom-dark-gray mt-[5px]" size={20} />
-										<p className={`text-custom-dark-gray group-hover:text-custom-light-apricot pl-2`}>Hosting resources</p>
+										<Hotel className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Hosting resources</p>
 									</div>
 								</NavbarButton>
 

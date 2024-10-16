@@ -11,6 +11,7 @@ const navbarItems: NavbarItems = {
 		{ label: 'Home', href: '/', icon: Home },
 		{ label: 'Explore', href: '/explore', icon: Search },
 		{ label: 'Hotels', href: '/hotels', icon: Hotel },
+		{ label: 'Rooms', href: '/rooms', icon: Hotel },
 		{ label: 'About', href: '/about', icon: Info },
 		{ label: 'Contact', href: '/contact', icon: List, },
 	],
@@ -21,6 +22,7 @@ const navbarItemsMobile: NavbarItems = {
 		{ href: '/home', icon: Home },
 		{ href: '/explore', icon: Search },
 		{ href: '/hotels', icon: Hotel },
+		{ href: '/rooms', icon: Hotel },
 		{ href: '/about', icon: Info, },
 		{ href: '/contact', icon: List },
 	]

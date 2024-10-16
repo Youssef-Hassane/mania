@@ -9,7 +9,7 @@ export default function SecondSection() {
 
 
   return (
-    <div className="h-auto w-full bg-custom-dark-gray flex flex-wrap px-[100px] justify-center items-center text-center p-[50px] gap-10">
+    <div className="h-auto w-full bg-custom-dark-gray flex flex-wrap md:px-[100px] px-[1px] justify-center items-center text-center md:p-[50px] gap-10">
       <div className="h-full w-full justify-center items-center text-center">
         <div className=" m-10">
           <p className="text-custom-light-apricot text-5xl">Amenities at Your Service</p>

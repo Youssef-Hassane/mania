@@ -20,7 +20,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex flex-col justify-between  bg-custom-dark-gray w-screen">
+    <div className="flex flex-col justify-center items-center bg-custom-dark-gray w-screen">
       <div className="w-full mb-8 md:mb-0 ">
         <form onSubmit={handleSubmit} className="w-full bg-custom-dark-gray rounded-lg p-8 text-custom-light-apricot placeholder:text-custom-dark-gray">
           <div className='flex flex-row w-full gap-4'>
@@ -73,13 +73,13 @@ const ContactUs = () => {
         </form>
       </div>
 
-      <div className="w-full md:w-1/2 lg:w-2/3 bg-custom-dark-gray">
+      <div className="flex justify-center items-center px-8 w-full md:px-8 lg:w-[85%] lg:px-0 bg-custom-dark-gray">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110049.7389141196!2d31.2357116!3d30.0444196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145840c5b5f5b5b5%3A0x5b5b5b5b5b5b5b5b!2sCairo%2C%20Egypt!5e0!3m2!1sen!2sus!4v1633024800000!5m2!1sen!2sus"
           width="100%"
           height="450"
           loading="lazy"
-          className=" w-screen h-[500px]"
+          className=" w-[] flex justify-center items-center h-[500px]"
         ></iframe>
       </div>
     </div>
