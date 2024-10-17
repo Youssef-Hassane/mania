@@ -2,22 +2,58 @@
 import { Separator } from '@radix-ui/react-separator';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const router = useRouter();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === "email") setEmail(value);
-    else setPassword(value);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login data: ', { email, password });
-    // Login logic
+  
+    const formBody = Object.keys(formData)
+      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(formData[key]))
+      .join('&');
+  
+    try {
+      const response = await fetch('http://localhost:5001/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',  // URL-encoded content type
+        },
+        body: formBody,  // Send URL-encoded data
+        credentials: 'include',  
+      });
+  
+      if (response.ok) {
+        console.log('Login successful');
+        alert('Login successful!');
+      } else if (response.status === 409) {
+        console.error('Email already in use');
+        alert('Email is already in use. Please use a different email.');
+      } else if (response.status === 302) {
+        console.error('Login successful');
+        alert('Login successful');
+        router.push('/home');
+      } else {
+        const errorData = await response.json();
+        console.error('Login failed', errorData);
+        alert('Login failed: ' + errorData.error);
+      }
+    } catch (error) {
+      console.error('Error during Login', error);
+      alert('An error occurred: ' + error.message);
+    }
   };
 
   return (
@@ -37,16 +73,16 @@ export default function LoginPage() {
           <input
             type="email"
             name="email"
-            value={email}
-            onChange={handleInputChange}
+            value={formData.email}
+            onChange={handleChange}
             placeholder="Email"
             className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
           />
           <input
             type="password"
             name="password"
-            value={password}
-            onChange={handleInputChange}
+            value={formData.password}
+            onChange={handleChange}
             placeholder="Password"
             className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
           />
@@ -57,7 +93,7 @@ export default function LoginPage() {
             Sign In
           </button>
           
-          <h1 className='text-custom-dark-gray text-center text-sm pt-2'>Don&apos;t have account? <Link className='' href={'/signup'}>SignUp</Link></h1>
+          <h1 className='text-custom-dark-gray text-center text-sm pt-2'>Don&apos;t have account? <Link className='' href={'/Login'}>Login</Link></h1>
           <h1 className='text-custom-dark-gray text-center text-sm pt-2'>Forgot Password? <Link className='text-custom-yellow' href={'/forgot-password'}>Reset</Link></h1>
 
         </div>
