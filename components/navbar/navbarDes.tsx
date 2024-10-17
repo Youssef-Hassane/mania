@@ -30,7 +30,7 @@ export function NavbarDes(props: NavbarProps) {
 				{/* <Image src="/logo-text.png" alt="logo" className='mx-3' width={100} height={100} priority/> */}
 
 				{/* logo */}
-				
+
 				<AvatarI className={`rounded-none w-auto h-[75px]  items-center text-center `}>
 					<p className="font-custom text-custom-light-apricot">HotelMania</p>
 					{/* <AvatarImageI src="/logo-text.png" alt="logo" /> */}
@@ -69,28 +69,29 @@ export function NavbarDes(props: NavbarProps) {
 
 						<PopoverContent className='mb-2 w-56 p-3 rounded-sm mr-[80px] '>
 							<div className='space-y-1 text-white'>
-
-								<NavbarButton
-									size='sm'
-									className='group w-full hover:bg-custom-dark-gray'
-									onClick={() => { }}
-								>
-									<div className='flex justify-between '>
-										<LogOut className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
-										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Log In</p>
-									</div>
-								</NavbarButton>
-
-								<NavbarButton
-									size='sm'
-									className='group w-full hover:bg-custom-dark-gray'
-									onClick={() => { }}
-								>
-									<div className='flex justify-between '>
-										<UserRoundPlus className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
-										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Sign Out</p>
-									</div>
-								</NavbarButton>
+								<Link href="/login">
+									<NavbarButton
+										size='sm'
+										className='group w-full hover:bg-custom-dark-gray'
+										
+									>
+										<div className='flex justify-between '>
+											<LogOut className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+											<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Log In</p>
+										</div>
+									</NavbarButton>
+								</Link>
+								<Link href="/signup">
+									<NavbarButton
+										size='sm'
+										className='group w-full hover:bg-custom-dark-gray'
+									>
+										<div className='flex justify-between '>
+											<UserRoundPlus className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+											<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Sign Up</p>
+										</div>
+									</NavbarButton>
+								</Link>
 
 								<Separator />
 

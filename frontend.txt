@@ -1,0 +1,3350 @@
+// File: components/AllContextsProvider.tsx
+import React from 'react';
+
+const AllContextsProvider = ({ contexts, children }) => {
+    return contexts.reduce((acc, [Context, value]) => (
+        <Context.Provider value={value}>{acc}</Context.Provider>
+    ), children);
+};
+
+export default AllContextsProvider;
+
+// File: components/DatePicker.tsx
+// File: components/DatePicker.tsx
+
+"use client";
+
+import * as React from "react";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+interface DatePickerDemoProps {
+  text: string;
+  selectedDate: Date | undefined;
+  onDateChange: (date: Date | undefined) => void;
+}
+
+export function DatePickerDemo({
+  text,
+  selectedDate,
+  onDateChange,
+}: DatePickerDemoProps) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "group w-auto justify-start text-left font-normal bg-transparent hover:bg-transparent border-none text-custom-light-apricot hover:text-custom-light-apricot/50",
+            !selectedDate && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon
+            className="mr-2 h-7 w-7 text-custom-light-apricot"
+            size={30}
+            width={40}
+          />
+          {selectedDate
+            ? format(selectedDate, "PPP")
+            : <span className="text-custom-light-apricot group-hover:text-custom-light-apricot/70">{text}</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0">
+        <Calendar
+          mode="single"
+          selected={selectedDate}
+          onSelect={onDateChange}
+          initialFocus
+          className="text-custom-light-apricot"
+        />
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+// File: components/cardInTheFourthSection.tsx
+import { CircleUser, Star } from "lucide-react";
+import { Avatar } from "./ui/avatar";
+
+type CardProps = {
+  name: string;
+  text: string;
+  date: string;
+};
+
+export default function CardInTheFourthSection({ name, text, date }: CardProps) {
+  return(
+    <div className="w-[470px] h-[475px] rounded-md bg-custom-light-apricot px-7 mb-9">
+
+        <div className="w-auto h-[20px] rounded-md  flex flex-row justify-between items-center py-8" >
+          <p>{date}</p>
+          <div className="flex flex-row gap-2">
+            <Star size={15} /> <Star size={15} /><Star size={15} /><Star size={15} /><Star size={15} />
+          </div>
+        </div>
+
+        <div className="mb-7">
+          <p className='text-start'>{text}</p>
+        </div>
+
+        <div className=" flex flex-row gap-2 justify-start items-center text-center">
+          <Avatar className='h-auto w-auto'>
+            <CircleUser size={35} />
+          </Avatar>
+          <p className="text-custom-dark-gray">{name}</p>
+        </div>
+
+      </div>
+  )
+}
+// File: components/cardInTheSecondSection.tsx
+import { ReactNode } from "react";
+import { Separator } from "./ui/separator";
+
+
+
+type CardProps = {
+  text: string;
+  logo?: ReactNode;
+};
+
+export default function CardInTheSecondSection({ text, logo }: CardProps) {
+  return (
+    <div className="h-[250px] w-[250px] flex flex-col justify-center items-center text-center  bg-custom-light-apricot rounded-md">
+      <div className="h-auto w-auto justify-center items-center text-center">
+        {logo}
+      </div>
+      <Separator className="h-3 bg-border-none" />
+      <p>{text}</p>
+    </div>
+  );
+}
+// File: components/cardInTheSecondSectionOfHotelsPage.tsx
+import { Separator } from "@/components/ui/separator";
+import { Tv, Wifi, ShowerHead } from 'lucide-react';
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+
+interface CardProps {
+  text: string;
+  Available: string;
+  price: string;
+  imageURL: string;
+  numbersOfRooms?: number;
+  where?: string;
+  amenities?: { id: string; name: string; iconURL: string }[]; // Add amenities prop
+
+}
+
+export default function CardInTheSecondSectionOfHotelsPage({ text, Available, price, imageURL, numbersOfRooms, amenities, where }: CardProps) {
+  return (
+    <div className="w-[450px] h-auto flex flex-col bg-custom-light-apricot rounded-md">
+      {/* Apply the background color and set the image */}
+      <div className="w-[450px] h-[250px] rounded-t-md bg-[#F8CBA4]">
+        <img className="w-full h-full object-cover min-h-[250px] rounded-t-md" src={imageURL} alt="" />
+      </div>
+
+      <div className="px-6 py-3">
+        <div className="w-full h-auto flex flex-row justify-between items-center">
+          <p className="text-2xl">
+            {text.length > 20 ? `${text.substring(0, 20)}...` : text}
+          </p>
+
+          {where === "room" ? (
+            <p>Available: {Available}</p>
+          ) : (
+            <p>Available Rooms: {numbersOfRooms}</p>
+          )}
+        </div>
+        {where === "room" ? (
+          <div className="flex flex-row">
+            <p className="text-xl text-start">{price} </p>
+            <p className="text-sm flex items-end pl-1">EGP</p>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="h-auto w-full flex flex-row justify-center items-center">
+        <Separator className="h-[1px] w-[95%] bg-custom-dark-gray" />
+      </div>
+
+      <div className="h-auto w-full flex flex-row justify-between items-center p-4">
+        <div className="flex flex-row gap-2">
+          {/* Display Amenities */}
+          {amenities && amenities.length > 0 && (
+            <div className="flex flex-row gap-2 mt-2">
+              <ScrollArea className="w-[260px] h-[50px] overflow-auto">
+                <div className="flex flex-row items-center gap-2">
+                  {amenities.map((amenity) => (
+                    <div key={amenity.id} className="flex flex-row items-center gap-2">
+                      {amenity.iconURL ? (
+                        <CircularCard
+                          util={
+                            <img
+                              src={amenity.iconURL}
+                              className="w-6 h-6"
+                              alt={amenity.name}
+                              style={{ filter: 'invert(87%) sepia(29%) saturate(575%) hue-rotate(323deg) brightness(100%) contrast(92%)' }} 
+                              />
+                          }
+                        />
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+                <ScrollBar className="scrollbar-none" orientation="horizontal" />
+              </ScrollArea>
+            </div>
+          )}
+        </div>
+
+        <div className="w-auto h-full flex flex-row justify-center items-center">
+          <button
+            className="w-[150px] h-[50px] rounded-md bg-custom-dark-gray text-custom-light-apricot hover:bg-custom-dark-gray/70 focus:outline-none"
+          >
+            Book Now
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CircularCard({ util }: { util: React.ReactNode }) {
+  return (
+    <div className="rounded-full bg-custom-dark-gray flex flex-row justify-center items-center h-[40px] w-[40px]">
+      {util}
+    </div>
+  );
+}
+
+// File: components/cardInTheThirdSection.tsx
+import { Separator } from "./ui/separator";
+
+
+
+interface CardProps {
+  text: string;
+  imageURL: string;
+  numbersOfRooms: number;
+}
+
+
+export default function CardInTheThirdSection({ text, imageURL, numbersOfRooms }: CardProps) {
+  return (
+    <div className='w-[385px] h-[385px] bg-custom-dark-gray flex justify-center  text-center p-6 rounded-md relative'>
+      <div className=" w-full h-full">
+        <img className="rounded-md w-full h-[290px] object-cover" src={imageURL} alt="" />
+        <Separator className="h-3 bg-border-none" />
+        <p className="text-custom-light-apricot">{text}</p>
+        <div className="h-[40px] w-[150px] bg-custom-light-apricot/70  flex rounded-md absolute top-8 right-9 text-center justify-center items-center">
+          <p>{numbersOfRooms} Rooms available</p>
+
+        </div>
+      </div>
+    </div>
+  )
+}
+// File: components/combobox.tsx
+// File: components/combobox.tsx
+"use client"
+
+import * as React from "react"
+import { Check, ChevronsUpDown } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+interface ComboboxDemoProps {
+  name: string;
+  options: { value: string; label: string }[];
+  value: string;
+  onChange: (value: string) => void;
+  disabled?: boolean;
+}
+
+export function ComboboxDemo({
+  name,
+  options,
+  value,
+  onChange,
+  disabled = false,
+}: ComboboxDemoProps) {
+  const [open, setOpen] = React.useState(false)
+
+  const handleSelect = (currentValue: string) => {
+    onChange(currentValue === value ? "" : currentValue)
+    setOpen(false)
+  }
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild className="bg-transparent border-none hover:bg-transparent ">
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          disabled={disabled}
+          className={cn(
+            "w-auto justify-start text-custom-light-apricot p-0 hover:text-custom-light-apricot/70",
+            disabled && "opacity-50 cursor-not-allowed"
+          )}
+        >
+          {value
+            ? options.find((option) => option.value === value)?.label
+            : name}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0 ">
+        <Command className="bg-[#323232] text-custom-light-apricot">
+          <CommandInput
+            className="text-custom-light-apricot"
+            placeholder={`Search ${name}...`}
+          />
+          <CommandList>
+            <CommandEmpty>No option found.</CommandEmpty>
+            <CommandGroup>
+              {options.map((option) => (
+                <CommandItem
+                  className="text-custom-light-apricot hover:bg-custom-light-apricot/50"
+                  key={option.value}
+                  value={option.value}
+                  onSelect={() => handleSelect(option.value)}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4 text-custom-light-apricot",
+                      value === option.value ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {option.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+// File: components/explore/Card.tsx
+// components/Card.tsx
+import React from "react";
+import Image from "next/image";
+
+interface CardProps {
+  imgSrc: string;
+  imgAlt: string;
+  title: string;
+  description: string;
+}
+
+const Card: React.FC<CardProps> = ({ imgSrc, imgAlt, title, description }) => {
+  return (
+    <div className="bg-custom-dark-gray rounded-lg overflow-hidden relative h-[800]">
+      <Image
+        src={imgSrc}
+        alt={imgAlt}
+        width={1200}
+        height={600}
+        className="w-full h-auto rounded-lg"
+      />
+      <div className="bg-custom-light-apricot p-6 text-center text-black absolute bottom-0 left-1/2 transform -translate-x-1/2 border-t-[10px] border-[#7C6A46] rounded-lg w-[900px] ">
+        <h3 className="text-xl font-bold">{title}</h3>
+        <p className="mt-4">{description}</p>
+      </div>
+      <div className="h-[100px]">
+      </div>
+    </div>
+  );
+};
+
+export default Card;
+
+// File: components/footer/company/About.tsx
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+
+
+
+export default function About() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger>About</AlertDialogTrigger>
+      <AlertDialogContent className="w-[70%] bg-custom-light-apricot text-custom-dark-gray border-none">
+        <AlertDialogHeader>
+          <ScrollArea className="h-[560px]">
+            <div className="w-full text-center p-5">
+              <strong className="text-3xl text-center">About HotelMania</strong>
+            </div>
+
+            <p><strong>HotelMania</strong> was founded with the vision of creating a seamless, user-friendly platform for travelers to discover and book hotels worldwide. Whether you’re booking a weekend getaway or an extended stay, we make it easy to find the perfect hotel tailored to your needs and budget.</p>
+
+            <strong>Our Mission:</strong>
+            <p>At HotelMania, our mission is to simplify the hotel booking process by offering a wide range of accommodation options at competitive prices. We aim to provide travelers with a reliable, hassle-free experience from start to finish.</p>
+
+            <strong>What We Offer:</strong>
+            <ul>
+              <li>A wide selection of hotels, ranging from budget-friendly options to luxury stays.</li>
+              <li>Special discounts and exclusive deals for registered users.</li>
+              <li>A secure platform to make and manage bookings.</li>
+              <li>24/7 customer support to assist with any questions or concerns.</li>
+            </ul>
+
+            <strong>Why Choose Us:</strong>
+            <p>We are more than just a hotel booking platform. HotelMania offers a personalized experience, ensuring that every user finds a stay that suits their preferences. We continuously work to improve our platform and build trust with our customers by maintaining transparency, competitive pricing, and excellent customer service.</p>
+
+            <strong>Our Technology:</strong>
+            <p>HotelMania is built on cutting-edge technology to ensure reliability and security. By leveraging frameworks such as React, Node.js, and secure databases, we provide a fast, responsive platform that guarantees a seamless booking experience for every user.</p>
+
+            <strong>Our Team:</strong>
+            <p>We are a group of passionate individuals dedicated to making travel easier for everyone. Our team combines expertise in software development, hospitality, and customer service to create a comprehensive platform tailored to the needs of modern travelers.</p>
+
+            <strong>Contact Us:</strong>
+            <p>If you have any questions or need assistance, feel free to reach out to us at <a href="mailto:support@hotelmania.com">support@hotelmania.com</a>. We are here to help you at every step of your journey!</p>
+          </ScrollArea>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+        <AlertDialogAction className="text-custom-light-apricot">Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+// File: components/footer/company/FAQ.tsx
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+
+
+
+export default function FAQ() {
+  return (
+    <AlertDialog>
+    <AlertDialogTrigger>F.A.Q</AlertDialogTrigger>
+    <AlertDialogContent className="w-[70%] bg-custom-light-apricot text-custom-dark-gray border-none">
+    <AlertDialogHeader>
+        <ScrollArea className="h-[560px]">
+          <div className="w-full text-center p-5">
+            <strong className="text-3xl text-center">Frequently Asked Questions</strong>
+          </div>
+
+          <strong>1. How do I create an account?</strong>
+          <p>To create an account, click on the "Sign Up" button on our homepage, fill in your personal information, and verify your email address through the confirmation link sent to you. Once verified, you can log in and start booking.</p>
+
+          <strong>2. Can I cancel or modify my booking?</strong>
+          <p>Yes, you can cancel or modify your booking through the "My Bookings" section of your account. Modifications are subject to availability, and any cancellations made within 48 hours of check-in may incur charges. Refer to our Refund Policy for more details.</p>
+
+          <strong>3. How secure is my payment information?</strong>
+          <p>Your security is our priority. All payment information is encrypted and securely processed through trusted third-party payment gateways. We do not store your payment details on our servers.</p>
+
+          <strong>4. What payment methods do you accept?</strong>
+          <p>We accept all major credit and debit cards, including Visa, Mastercard, and American Express. In some regions, alternative payment options like PayPal or local payment methods may be available.</p>
+
+          <strong>5. Can I book multiple rooms at once?</strong>
+          <p>Yes, you can book multiple rooms for your stay. When booking, simply select the number of rooms required and specify any additional details, such as the number of guests per room.</p>
+
+          <strong>6. What if I arrive late for my check-in?</strong>
+          <p>If you anticipate arriving later than your scheduled check-in time, please notify the hotel directly to ensure that your room is held for you. Some hotels may have specific policies for late check-ins.</p>
+
+          <strong>7. How can I contact customer support?</strong>
+          <p>If you have any issues or questions, feel free to reach out to our support team at <a href="mailto:support@hotelmania.com">support@hotelmania.com</a> or use the contact form on our website.</p>
+
+          <strong>8. Do you offer special rates for group bookings?</strong>
+          <p>Yes, we offer discounted rates for group bookings. Please contact our customer support team for more information on group reservations and discounts.</p>
+        </ScrollArea>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+      <AlertDialogAction className="text-custom-light-apricot">Continue</AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+  );
+}
+// File: components/footer/company/privacyPolicy.tsx
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+
+
+
+export default function PrivacyPolicy() {
+  return (
+    <AlertDialog >
+      <AlertDialogTrigger >Privacy policy</AlertDialogTrigger>
+      <AlertDialogContent className="w-[70%] bg-custom-light-apricot text-custom-dark-gray border-none">
+        <AlertDialogHeader>
+          <ScrollArea className="h-[560px]">
+
+            <div className="w-full text-center p-5">
+              <strong className="text-3xl text-center"> Privacy Policy</strong>
+            </div>
+            <p>At <strong>HotelMania</strong>, your privacy is our priority. We are committed to safeguarding your personal information and ensuring it is collected, used, and disclosed in compliance with applicable privacy laws. By using our platform, you agree to the collection of necessary details such as name, contact information, and transaction data for the purpose of hotel reservations. We do not sell or share your data with third parties without consent unless required by law.</p>
+            <strong>1. Data Security:</strong>
+            <p> We utilize secure technologies to protect your personal information from unauthorized access, including encryption and firewalls.</p>
+            <strong>2. Third-Party Services:</strong>
+            <p> Our platform may link to third-party services like payment gateways, which have their own privacy policies. We recommend reviewing them.</p>
+            <strong>3. User Rights:</strong>
+            <p> You have the right to access, correct, or delete your personal information. For inquiries or concerns, please contact our support team.</p>
+            <strong>4. Information We Collect:</strong>
+            <p> We collect the following information:</p>
+            <ul>
+              <li>Personal details such as name, email address, phone number, and payment information.</li>
+              <li>Reservation data including hotel preferences and booking history.</li>
+              <li>Usage and device data for improving our platform's functionality.</li>
+            </ul>
+            <strong>5. How We Use Your Information:</strong>
+            <p> We use your information to:</p>
+            <ul>
+              <li>Process bookings and payments.</li>
+              <li>Improve the user experience by personalizing the platform.</li>
+              <li>Communicate updates or confirmations regarding reservations.</li>
+            </ul>
+            <strong>6. How We Share Your Information:</strong>
+            <p>We may share your information under certain circumstances such as with service providers or for legal compliance. We do not sell your data to third parties.</p>
+            <strong>7. Cookies and Tracking:</strong>
+            <p> We use cookies to enhance your browsing experience. You can disable cookies through your browser settings, but doing so may affect platform functionality.</p>
+            <strong>8. Data Retention:</strong>
+            <p> We retain your information for as long as necessary to provide services and for legal reasons. You can request deletion at any time by contacting us.</p>
+            <strong>9. Children’s Privacy:</strong>
+            <p> Our platform is not intended for individuals under 18 years old. If we find that a minor’s information has been collected, we will delete it.</p>
+            <strong>10. Changes to the Privacy Policy:</strong>
+            <p> We may update this policy, and any changes will be communicated via email or website notification.</p>
+            <strong>Contact Us:</strong>
+            <p> For any concerns or inquiries, reach out to us at <a href="mailto:support@hotelmania.com">support@hotelmania.com</a>.</p>
+          </ScrollArea>
+        </AlertDialogHeader>
+        <AlertDialogFooter >
+          <AlertDialogAction className="text-custom-light-apricot">Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+// File: components/footer/company/refundPolicy.tsx
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+
+
+export default function RefundPolicy() {
+  return (
+    <AlertDialog>
+          <AlertDialogTrigger>Refund policy</AlertDialogTrigger>
+          <AlertDialogContent className="w-[70%] bg-custom-light-apricot text-custom-dark-gray border-none">
+          <AlertDialogHeader>
+              <ScrollArea className="h-[560px]">
+                <div className="w-full text-center p-5">
+                  <strong className="text-3xl text-center ">Refund Policy</strong>
+                </div>
+                <p>At <strong>HotelMania</strong>, we strive to provide a hassle-free experience for all users. Below is our comprehensive refund policy:</p>
+
+                <strong>1. Cancellation and Refund Eligibility:</strong>
+                <p>To be eligible for a refund, cancellations must be made more than 48 hours before your check-in date. If a cancellation is made within the 48-hour window, the reservation may be subject to a partial or no refund based on the hotel's individual policy.</p>
+
+                <strong>2. Refund Exceptions:</strong>
+                <p>Some special bookings, including non-refundable offers or promotional rates, are not eligible for a refund. Please check the terms and conditions for each specific booking before completing your reservation.</p>
+
+                <strong>3. Refund Process:</strong>
+                <p>Refunds for eligible cancellations will be processed within 7-10 business days. All refunds will be issued back to the original payment method used during booking. Please note that the time it takes for the refund to reflect in your account may vary depending on your bank's policies.</p>
+
+                <strong>4. Force Majeure:</strong>
+                <p>If you need to cancel due to unforeseen events like natural disasters, political instability, or government restrictions (i.e., force majeure), we will work with our hotel partners to offer flexible solutions, which may include rebooking or partial refunds.</p>
+
+                <strong>5. Modification of Bookings:</strong>
+                <p>If you would like to modify your reservation, such as changing your check-in date or extending your stay, please contact our support team. We will attempt to accommodate these changes based on availability, but changes may incur additional charges or cancellation penalties depending on the hotel's policies.</p>
+
+                <strong>6. Disputes and Resolution:</strong>
+                <p>If you believe you are entitled to a refund but have not received one, please contact our support team at <a href="mailto:support@hotelmania.com">support@hotelmania.com</a>. We will investigate the issue and resolve it as promptly as possible.</p>
+
+                <strong>7. Contact Us:</strong>
+                <p>If you have any further questions regarding our refund policy, please contact us at <a href="mailto:support@hotelmania.com">support@hotelmania.com</a>.</p>
+              </ScrollArea>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+            <AlertDialogAction className="text-custom-light-apricot">Continue</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+  );
+}
+// File: components/footer/company.tsx
+import { Separator } from "../ui/separator";
+import PrivacyPolicy from "./company/privacyPolicy";
+import RefundPolicy from "./company/refundPolicy";
+import FAQ from "./company/FAQ";
+import About from "./company/About";
+
+
+export default function CompanyFooter() {
+  return (
+    <div className='w-full max-w-[200px] h-[300px] '>
+      <ul>
+        <h3 className='text-xl font-medium'>Company</h3>
+        <Separator className='h-3 bg-border-none' />
+        <PrivacyPolicy />
+        <br />
+        <RefundPolicy />
+        <br />
+        <FAQ />
+        <br />
+        <About />
+      </ul>
+    </div>
+  );
+}
+
+// File: components/footer/footer.tsx
+import React from 'react';
+import CompanyFooter from './company';
+import SocialMedia from './socialMedia';
+import Newsletter from './newsletter';
+import QuickLinks from './quickLinks';
+import HotelManiaInfo from './hotelManiaInfo';
+
+
+export default function Footer() {
+  return (
+    <footer className='w-full h-[400px] bottom-0 bg-custom-light-apricot border-t-2 border-custom-dark-gray'>
+      <div className='flex flex-row gap-4 justify-between items-center mx-[150px] h-full'>
+        <HotelManiaInfo />
+        <QuickLinks />
+        <CompanyFooter />
+        <SocialMedia />
+        <Newsletter />
+      </div>
+    </footer>
+  );
+};
+
+
+// File: components/footer/hotelManiaInfo.tsx
+import { Separator } from "../ui/separator";
+
+export default function HotelManiaInfo() {
+  return (
+    <div className='w-full max-w-[400px] h-[300px] '>
+      <p className="font-custom ">HotelMania</p>
+      <Separator className='h-3 bg-border-none' />
+      <p>The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us)</p>
+    </div>
+  )
+}
+// File: components/footer/newsletter.tsx
+import { Separator } from "../ui/separator";
+import { useState } from "react";
+import { toast } from "sonner"
+
+
+export default function Newsletter() {
+
+
+  const [email, setEmail] = useState("");
+
+  return (
+    <div className='w-full max-w-[400px] h-[300px] '>
+
+      <ul>
+        <h3 className='text-xl font-medium'>Newsletter</h3>
+        <Separator className='h-3 bg-border-none' />
+
+        <li>Kindly subscribe to our newsletter to get latest deals on our rooms and vacation discount.</li>
+        <Separator className='h-3 bg-border-none' />
+
+        <div className="flex flex-row mb-4 h-[70px] w-full p-3 rounded-md bg-custom-dark-gray  placeholder-custom-light-apricot justify-center items-center text-center">
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter Your Email"
+            className=" h-[50px] w-full p-3  bg-custom-dark-gray text-custom-light-apricot placeholder-custom-light-apricot focus:outline-none focus:border-blue-500"
+          />
+          <button
+            onClick={() =>
+              toast(
+                <div className="flex flex-row">
+                  <div>
+                    <p>You have subscribed 💌</p>
+                    <p className="text-custom-light-apricot/70">Now you will get the latest deals on our rooms and vacation discount.</p>
+                  </div>
+                  <button
+                    className="w-[100px] h-[40px] rounded-md bg-custom-light-apricot text-custom-dark-gray hover:bg-custom-light-apricot/70 focus:outline-none"
+                    onClick={() => {
+                      console.log("Undo clicked");
+                      toast.dismiss();
+                    }}
+                  >
+                    Undo
+                  </button>
+                </div>
+              )
+            }
+            className="w-[200px] h-[50px] rounded-md bg-custom-light-apricot text-custom-dark-gray hover:bg-custom-light-apricot/70 focus:outline-none"
+          >
+            Subscribe
+          </button>
+        </div>
+      </ul>
+    </div>
+  );
+};
+// File: components/footer/quickLinks.tsx
+import Link from 'next/link';
+import { Separator } from "../ui/separator";
+
+export default function QuickLinks() {
+  return (
+    <div className='w-full max-w-[200px] h-[300px] '>
+      <ul>
+        <h3 className='text-xl font-medium'>Quick links</h3>
+        <Separator className='h-3 bg-border-none' />
+
+
+
+
+        <li><Link href="/hotels">Room booking</Link></li>
+        <li><Link href="/hotels">Rooms</Link></li>
+        <li><Link href="/contact">Contact</Link></li>
+        <li><Link href="/explore">Explore</Link></li>
+
+      </ul>
+    </div>
+  )
+}
+// File: components/footer/socialMedia.tsx
+import { Separator } from "../ui/separator";
+
+export default function SocialMedia() {
+  return (
+    <div className='w-full max-w-[200px] h-[300px] '>
+      <ul>
+        <h3 className='text-xl font-medium'>Social media</h3>
+        <Separator className='h-3 bg-border-none' />
+
+        <li><a href="https://www.facebook.com/profile.php?id=61566758795600" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+        <li><a href="https://twitter.com/hotelmaniasup?s=21&t=GWm_x4PQ9PysvEcop7ivFQ" target="_blank" rel="noopener noreferrer">Twitter (X)</a></li>
+        <li><a href="https://www.instagram.com/hotelmaniasup/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        <li><a href="https://www.linkedin.com/in/mania-hotel/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+      </ul>
+    </div>
+  );
+}
+// File: components/navbar/navbar-button.tsx
+import { LucideIcon } from 'lucide-react';
+import { Button, ButtonProps } from '../ui/button';
+import { cn } from '@/lib/utils';
+import { SheetClose } from '../ui/sheet';
+
+interface NavbarButtonProps extends ButtonProps {
+  icon?: LucideIcon;
+}
+
+export function NavbarButton({
+  icon: Icon,
+  className,
+  children,
+  ...props
+}: NavbarButtonProps) {
+  return (
+    <Button
+      variant='ghost'
+      className={cn('gap-4 text-lg justify-start text-white hover:text-custom-light-apricot', className)}
+      {...props}
+    >
+      {Icon && <Icon size={20} />}
+      <span>{children}</span>
+    </Button>
+  );
+}
+
+export function NavbarButtonSheet(props: NavbarButtonProps) {
+  return (
+    <SheetClose asChild>
+      <NavbarButton {...props} />
+    </SheetClose>
+  );
+}
+// File: components/navbar/navbar.tsx
+'use client'
+
+import { Info, Search, Home, List, Hotel } from 'lucide-react';
+import { NavbarDes } from './navbarDes';
+import { NavbarItems } from '@/types';
+import { useMediaQuery } from 'usehooks-ts';
+import { NavbarMob } from './navbarMob';
+
+const navbarItems: NavbarItems = {
+	links: [
+		{ label: 'Home', href: '/', icon: Home },
+		{ label: 'Explore', href: '/explore', icon: Search },
+		{ label: 'Hotels', href: '/hotels', icon: Hotel },
+		{ label: 'Rooms', href: '/rooms', icon: Hotel },
+		{ label: 'About', href: '/about', icon: Info },
+		{ label: 'Contact', href: '/contact', icon: List, },
+	],
+}
+
+const navbarItemsMobile: NavbarItems = {
+	links: [
+		{ href: '/home', icon: Home },
+		{ href: '/explore', icon: Search },
+		{ href: '/hotels', icon: Hotel },
+		{ href: '/rooms', icon: Hotel },
+		{ href: '/about', icon: Info, },
+		{ href: '/contact', icon: List },
+	]
+}
+
+export function Navbar() {
+
+	const isDesktop = useMediaQuery('(min-width: 900px)', { initializeWithValue: false });
+
+	if (isDesktop) {
+		return (
+			<div className='h-[100px]'>
+				<NavbarDes navbarItems={navbarItems} />
+			</div>
+		);
+	}
+
+	return (
+		<NavbarMob navbarItems={navbarItemsMobile} />
+	);
+
+}
+
+// File: components/navbar/navbarDes.tsx
+
+import { NavbarButton } from "./navbar-button";
+import { NavbarItems } from "@/types";
+import Link from "next/link";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../ui/button";
+import { Avatar } from "../ui/avatar";
+import { Avatar as AvatarI } from "../ui/avatarImage";
+import { LogOut, UserCog, UserRoundPlus, Hotel, Headset, Icon } from "lucide-react";
+import { usePathname } from "next/navigation";
+import React from 'react';
+import { Separator } from "../ui/separator";
+
+
+interface NavbarProps {
+	navbarItems: NavbarItems;
+}
+
+export function NavbarDes(props: NavbarProps) {
+
+
+	const pathname = usePathname();
+
+
+	return (
+		/* navbar */
+		<aside className="bg-custom-dark-gray w-full fixed z-50 ">
+			<div className="h-[100px] flex justify-between items-center mx-[50px]">
+
+				{/* <Image src="/logo-text.png" alt="logo" className='mx-3' width={100} height={100} priority/> */}
+
+				{/* logo */}
+				
+				<AvatarI className={`rounded-none w-auto h-[75px]  items-center text-center `}>
+					<p className="font-custom text-custom-light-apricot">HotelMania</p>
+					{/* <AvatarImageI src="/logo-text.png" alt="logo" /> */}
+					{/* <AvatarFallbackI></AvatarFallbackI> */}
+				</AvatarI>
+
+				{/* links of the pages */}
+				<div className="flex flex-row gap-1 ">
+					{props.navbarItems.links.map((link, index) => (
+						<Link key={index} href={link.href}>
+							<NavbarButton variant={"none"} className={`w-full ${pathname === link.href ? 'text-custom-light-apricot' : ''}`} icon={link.icon}>
+								{link.label}
+							</NavbarButton>
+						</Link>
+					))}
+				</div>
+
+
+				{/* user profile */}
+				<div className=' px-3 bg-custom-dark'>
+
+					<Popover >
+						<PopoverTrigger asChild>
+							<Button variant='none' className='group w-full justify-start '>
+								<div className='flex justify-between items-center '>
+									<div className='flex gap-2'>
+										<Avatar className='h-10 w-10'>
+											<UserCog className="group-hover:text-custom-light-apricot text-white" size={30} />
+										</Avatar>
+										{/* <span>{'Youssef Hassane'}</span> */}
+									</div>
+								</div>
+							</Button>
+						</PopoverTrigger>
+
+
+						<PopoverContent className='mb-2 w-56 p-3 rounded-sm mr-[80px] '>
+							<div className='space-y-1 text-white'>
+
+								<NavbarButton
+									size='sm'
+									className='group w-full hover:bg-custom-dark-gray'
+									onClick={() => { }}
+								>
+									<div className='flex justify-between '>
+										<LogOut className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Log In</p>
+									</div>
+								</NavbarButton>
+
+								<NavbarButton
+									size='sm'
+									className='group w-full hover:bg-custom-dark-gray'
+									onClick={() => { }}
+								>
+									<div className='flex justify-between '>
+										<UserRoundPlus className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Sign Out</p>
+									</div>
+								</NavbarButton>
+
+								<Separator />
+
+								<NavbarButton
+									size='sm'
+									className='group w-full hover:bg-custom-dark-gray'
+									onClick={() => { }}
+								>
+									<div className='flex justify-between '>
+										<Headset className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Help Center</p>
+									</div>
+								</NavbarButton>
+
+								<NavbarButton
+									size='sm'
+									className='group w-full hover:bg-custom-dark-gray'
+									onClick={() => { }}
+								>
+									<div className='flex justify-between '>
+										<Hotel className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
+										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Hosting resources</p>
+									</div>
+								</NavbarButton>
+
+							</div>
+						</PopoverContent>
+
+
+					</Popover>
+				</div>
+			</div>
+
+		</aside>
+	)
+}
+
+
+// File: components/navbar/navbarMob.tsx
+'use client';
+
+import { NavbarItems } from '@/types';
+import {Sheet} from '../ui/sheet';
+import Link from 'next/link';
+import { NavbarButtonSheet as NavbarButton } from './navbar-button';
+import { usePathname } from 'next/navigation';
+import { Separator } from '../ui/separator';
+
+
+interface NavbarMobileProps {
+  navbarItems: NavbarItems;
+}
+
+export function NavbarMob(props: NavbarMobileProps) {
+  const pathname = usePathname();
+
+  return (
+    <Sheet >
+
+      <div className='fixed -bottom-[18px] bg-custom-dark-gray w-full h-[100px] z-50 '>
+      <Separator />
+
+        <div className='flex justify-between items-center py-2 px-1 mx-5'>
+          {props.navbarItems.links.map((link, idx) => (
+            <Link key={idx} href={link.href}>
+              <NavbarButton
+                variant={pathname === link.href ? 'secondary' : 'ghost'}
+                icon={link.icon}
+                className={`${pathname === link.href ? 'text-custom-dark-gray bg-custom-light-apricot' : ''} h-[50px] hover:bg-custom-light-apricot hover:text-custom-dark-gray flex flex-col rounded-[100%] justify-center items-center gap-0`}
+              >
+
+              </NavbarButton>
+            </Link>
+          ))}
+
+        </div>
+      </div>
+    </Sheet>
+  );
+};
+// File: components/ui/alert-dialog.tsx
+"use client"
+
+import * as React from "react"
+import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
+
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+
+const AlertDialog = AlertDialogPrimitive.Root
+
+const AlertDialogTrigger = AlertDialogPrimitive.Trigger
+
+const AlertDialogPortal = AlertDialogPrimitive.Portal
+
+const AlertDialogOverlay = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Overlay
+    className={cn(
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className
+    )}
+    {...props}
+    ref={ref}
+  />
+))
+AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName
+
+const AlertDialogContent = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPortal>
+    <AlertDialogOverlay />
+    <AlertDialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full  translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+        className
+      )}
+      {...props}
+    />
+  </AlertDialogPortal>
+))
+AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName
+
+const AlertDialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-2 text-center sm:text-left",
+      className
+    )}
+    {...props}
+  />
+)
+AlertDialogHeader.displayName = "AlertDialogHeader"
+
+const AlertDialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className
+    )}
+    {...props}
+  />
+)
+AlertDialogFooter.displayName = "AlertDialogFooter"
+
+const AlertDialogTitle = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Title
+    ref={ref}
+    className={cn("text-lg font-semibold", className)}
+    {...props}
+  />
+))
+AlertDialogTitle.displayName = AlertDialogPrimitive.Title.displayName
+
+const AlertDialogDescription = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+AlertDialogDescription.displayName =
+  AlertDialogPrimitive.Description.displayName
+
+const AlertDialogAction = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Action>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Action
+    ref={ref}
+    className={cn(buttonVariants(), className)}
+    {...props}
+  />
+))
+AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName
+
+const AlertDialogCancel = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Cancel
+    ref={ref}
+    className={cn(
+      buttonVariants({ variant: "outline" }),
+      "mt-2 sm:mt-0",
+      className
+    )}
+    {...props}
+  />
+))
+AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName
+
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+}
+
+// File: components/ui/avatar.tsx
+"use client"
+
+import * as React from "react"
+import * as AvatarPrimitive from "@radix-ui/react-avatar"
+
+import { cn } from "@/lib/utils"
+
+const Avatar = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Root
+    ref={ref}
+    className={cn(
+      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+      className
+    )}
+    {...props}
+  />
+))
+Avatar.displayName = AvatarPrimitive.Root.displayName
+
+const AvatarImage = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Image>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Image
+    ref={ref}
+    className={cn("aspect-square h-full w-full", className)}
+    {...props}
+  />
+))
+AvatarImage.displayName = AvatarPrimitive.Image.displayName
+
+const AvatarFallback = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Fallback>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Fallback
+    ref={ref}
+    className={cn(
+      "flex h-full w-full items-center justify-center rounded-full bg-muted",
+      className
+    )}
+    {...props}
+  />
+))
+AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
+
+export { Avatar, AvatarImage, AvatarFallback }
+
+// File: components/ui/avatarImage.tsx
+"use client"
+
+import * as React from "react"
+import * as AvatarPrimitive from "@radix-ui/react-avatar"
+
+import { cn } from "@/lib/utils"
+
+const Avatar = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Root
+    ref={ref}
+    className={cn(
+      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+      className
+    )}
+    {...props}
+  />
+))
+Avatar.displayName = AvatarPrimitive.Root.displayName
+
+const AvatarImage = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Image>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Image
+    ref={ref}
+    className={cn("aspect-square h-full w-full", className)}
+    {...props}
+  />
+))
+AvatarImage.displayName = AvatarPrimitive.Image.displayName
+
+const AvatarFallback = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Fallback>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Fallback
+    ref={ref}
+    className={cn(
+      "flex h-full w-full items-center justify-center rounded-none",
+      className
+    )}
+    {...props}
+  />
+))
+AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
+
+export { Avatar, AvatarImage, AvatarFallback }
+
+// File: components/ui/button copy.tsx
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }
+
+// File: components/ui/button.tsx
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        none: "",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }
+
+// File: components/ui/calendar.tsx
+import * as React from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { DayPicker } from "react-day-picker"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+
+// Get today's date
+const today = new Date()
+
+export type CalendarProps = React.ComponentProps<typeof DayPicker>
+
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  ...props
+}: CalendarProps) {
+  return (
+    <DayPicker
+      showOutsideDays={showOutsideDays}
+      className={cn("p-3", className)}
+      classNames={{
+        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+        month: "space-y-4",
+        caption: "flex justify-center pt-1 relative items-center",
+        caption_label: "text-sm font-medium",
+        nav: "space-x-1 flex items-center",
+        nav_button: cn(
+          buttonVariants({ variant: "outline" }),
+          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+        ),
+        nav_button_previous: "absolute left-1",
+        nav_button_next: "absolute right-1",
+        table: "w-full border-collapse space-y-1",
+        head_row: "flex",
+        head_cell:
+          "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
+        row: "flex w-full mt-2",
+        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-custom-light-apricot [&:has([aria-selected])]:rounded-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+        day: cn(
+          buttonVariants({ variant: "ghost" }),
+          "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+        ),
+        day_range_end: "day-range-end",
+        day_selected:
+          " text-primary-foreground hover:bg-custom-light-apricot hover:text-custom-dark-gray focus:bg-custom-light-apricot focus:text-custom-dark-gray focus:rounded-md",
+        day_today: "bg-custom-light-apricot/60 text-accent-foreground",
+        day_outside:
+          "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
+        day_disabled: "text-muted-foreground opacity-50",
+        day_range_middle:
+          "aria-selected:bg-accent aria-selected:text-accent-foreground",
+        day_hidden: "invisible",
+        ...classNames,
+      }}
+      components={{
+        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
+        IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+      }}
+      disabled={[{ before: today }]}  // Disable all past days
+      {...props}
+    />
+  )
+}
+
+Calendar.displayName = "Calendar"
+
+export { Calendar }
+
+// File: components/ui/command.tsx
+"use client"
+
+import * as React from "react"
+import { type DialogProps } from "@radix-ui/react-dialog"
+import { Command as CommandPrimitive } from "cmdk"
+import { Search } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+
+const Command = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive>
+>(({ className, ...props }, ref) => (
+  <CommandPrimitive
+    ref={ref}
+    className={cn(
+      "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
+      className
+    )}
+    {...props}
+  />
+))
+Command.displayName = CommandPrimitive.displayName
+
+interface CommandDialogProps extends DialogProps {}
+
+const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
+  return (
+    <Dialog {...props}>
+      <DialogContent className="overflow-hidden p-0 shadow-lg">
+        <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+          {children}
+        </Command>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+const CommandInput = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive.Input>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
+>(({ className, ...props }, ref) => (
+  <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
+    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+    <CommandPrimitive.Input
+      ref={ref}
+      className={cn(
+        "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+      {...props}
+    />
+  </div>
+))
+
+CommandInput.displayName = CommandPrimitive.Input.displayName
+
+const CommandList = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive.List>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.List>
+>(({ className, ...props }, ref) => (
+  <CommandPrimitive.List
+    ref={ref}
+    className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
+    {...props}
+  />
+))
+
+CommandList.displayName = CommandPrimitive.List.displayName
+
+const CommandEmpty = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive.Empty>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>
+>((props, ref) => (
+  <CommandPrimitive.Empty
+    ref={ref}
+    className="py-6 text-center text-sm"
+    {...props}
+  />
+))
+
+CommandEmpty.displayName = CommandPrimitive.Empty.displayName
+
+const CommandGroup = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive.Group>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Group>
+>(({ className, ...props }, ref) => (
+  <CommandPrimitive.Group
+    ref={ref}
+    className={cn(
+      "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground ",
+      className
+    )}
+    {...props}
+  />
+))
+
+CommandGroup.displayName = CommandPrimitive.Group.displayName
+
+const CommandSeparator = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive.Separator>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>
+>(({ className, ...props }, ref) => (
+  <CommandPrimitive.Separator
+    ref={ref}
+    className={cn("-mx-1 h-px bg-border ", className)}
+    {...props}
+  />
+))
+CommandSeparator.displayName = CommandPrimitive.Separator.displayName
+
+const CommandItem = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
+>(({ className, ...props }, ref) => (
+  <CommandPrimitive.Item
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-custom-light-apricot data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
+      className
+    )}
+    {...props}
+  />
+))
+
+CommandItem.displayName = CommandPrimitive.Item.displayName
+
+const CommandShortcut = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement>) => {
+  return (
+    <span
+      className={cn(
+        "ml-auto text-xs tracking-widest text-muted-foreground ",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+CommandShortcut.displayName = "CommandShortcut"
+
+export {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+}
+
+// File: components/ui/dialog.tsx
+"use client"
+
+import * as React from "react"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { X } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const Dialog = DialogPrimitive.Root
+
+const DialogTrigger = DialogPrimitive.Trigger
+
+const DialogPortal = DialogPrimitive.Portal
+
+const DialogClose = DialogPrimitive.Close
+
+const DialogOverlay = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Overlay
+    ref={ref}
+    className={cn(
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className
+    )}
+    {...props}
+  />
+))
+DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
+
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
+  </DialogPortal>
+))
+DialogContent.displayName = DialogPrimitive.Content.displayName
+
+const DialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-1.5 text-center sm:text-left",
+      className
+    )}
+    {...props}
+  />
+)
+DialogHeader.displayName = "DialogHeader"
+
+const DialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className
+    )}
+    {...props}
+  />
+)
+DialogFooter.displayName = "DialogFooter"
+
+const DialogTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Title
+    ref={ref}
+    className={cn(
+      "text-lg font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+DialogTitle.displayName = DialogPrimitive.Title.displayName
+
+const DialogDescription = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+DialogDescription.displayName = DialogPrimitive.Description.displayName
+
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+}
+
+// File: components/ui/popover.tsx
+"use client"
+
+import * as React from "react"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
+
+import { cn } from "@/lib/utils"
+
+const Popover = PopoverPrimitive.Root
+
+const PopoverTrigger = PopoverPrimitive.Trigger
+
+const PopoverContent = React.forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+>(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
+  <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Content
+      ref={ref}
+      align={align}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 w-72 rounded-md border bg-[#323232] p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className
+      )}
+      {...props}
+    />
+  </PopoverPrimitive.Portal>
+))
+PopoverContent.displayName = PopoverPrimitive.Content.displayName
+
+export { Popover, PopoverTrigger, PopoverContent }
+
+// File: components/ui/scroll-area.tsx
+"use client"
+
+import * as React from "react"
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
+
+import { cn } from "@/lib/utils"
+
+const ScrollArea = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
+>(({ className, children, ...props }, ref) => (
+  <ScrollAreaPrimitive.Root
+    ref={ref}
+    className={cn("relative overflow-hidden", className)}
+    {...props}
+  >
+    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+      {children}
+    </ScrollAreaPrimitive.Viewport>
+    <ScrollBar />
+    <ScrollAreaPrimitive.Corner />
+  </ScrollAreaPrimitive.Root>
+))
+ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
+
+const ScrollBar = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
+>(({ className, orientation = "vertical", ...props }, ref) => (
+  <ScrollAreaPrimitive.ScrollAreaScrollbar
+    ref={ref}
+    orientation={orientation}
+    className={cn(
+      "flex touch-none select-none transition-colors ",
+      orientation === "vertical" &&
+        "h-full w-2.5 border-l border-l-transparent p-[1px] ",
+      orientation === "horizontal" &&
+        "h-2.5 flex-col border-t border-t-transparent p-[1px] ",
+      className
+    )}
+    {...props}
+  >
+    <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-border bg-custom-dark-gray" />
+  </ScrollAreaPrimitive.ScrollAreaScrollbar>
+))
+ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
+
+export { ScrollArea, ScrollBar }
+
+// File: components/ui/separator.tsx
+"use client"
+
+import * as React from "react"
+import * as SeparatorPrimitive from "@radix-ui/react-separator"
+
+import { cn } from "@/lib/utils"
+
+const Separator = React.forwardRef<
+  React.ElementRef<typeof SeparatorPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>
+>(
+  (
+    { className, orientation = "horizontal", decorative = true, ...props },
+    ref
+  ) => (
+    <SeparatorPrimitive.Root
+      ref={ref}
+      decorative={decorative}
+      orientation={orientation}
+      className={cn(
+        "shrink-0 bg-border",
+        orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
+        className
+      )}
+      {...props}
+    />
+  )
+)
+Separator.displayName = SeparatorPrimitive.Root.displayName
+
+export { Separator }
+
+// File: components/ui/sheet.tsx
+"use client"
+
+import * as React from "react"
+import * as SheetPrimitive from "@radix-ui/react-dialog"
+import { cva, type VariantProps } from "class-variance-authority"
+import { X } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const Sheet = SheetPrimitive.Root
+
+const SheetTrigger = SheetPrimitive.Trigger
+
+const SheetClose = SheetPrimitive.Close
+
+const SheetPortal = SheetPrimitive.Portal
+
+const SheetOverlay = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <SheetPrimitive.Overlay
+    className={cn(
+      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className
+    )}
+    {...props}
+    ref={ref}
+  />
+))
+SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
+
+const sheetVariants = cva(
+  "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
+  {
+    variants: {
+      side: {
+        top: "inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
+        bottom:
+          "inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
+        left: "inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm",
+        right:
+          "inset-y-0 right-0 h-full w-3/4  border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
+      },
+    },
+    defaultVariants: {
+      side: "right",
+    },
+  }
+)
+
+interface SheetContentProps
+  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+    VariantProps<typeof sheetVariants> {}
+
+const SheetContent = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Content>,
+  SheetContentProps
+>(({ side = "right", className, children, ...props }, ref) => (
+  <SheetPortal>
+    <SheetOverlay />
+    <SheetPrimitive.Content
+      ref={ref}
+      className={cn(sheetVariants({ side }), className)}
+      {...props}
+    >
+      {children}
+      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </SheetPrimitive.Close>
+    </SheetPrimitive.Content>
+  </SheetPortal>
+))
+SheetContent.displayName = SheetPrimitive.Content.displayName
+
+const SheetHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-2 text-center sm:text-left",
+      className
+    )}
+    {...props}
+  />
+)
+SheetHeader.displayName = "SheetHeader"
+
+const SheetFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className
+    )}
+    {...props}
+  />
+)
+SheetFooter.displayName = "SheetFooter"
+
+const SheetTitle = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <SheetPrimitive.Title
+    ref={ref}
+    className={cn("text-lg font-semibold text-foreground", className)}
+    {...props}
+  />
+))
+SheetTitle.displayName = SheetPrimitive.Title.displayName
+
+const SheetDescription = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <SheetPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+SheetDescription.displayName = SheetPrimitive.Description.displayName
+
+export {
+  Sheet,
+  SheetPortal,
+  SheetOverlay,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+}
+
+// File: components/ui/sonner.tsx
+"use client"
+
+import { useTheme } from "next-themes"
+import { Toaster as Sonner } from "sonner"
+
+type ToasterProps = React.ComponentProps<typeof Sonner>
+
+const Toaster = ({ ...props }: ToasterProps) => {
+  const { theme = "system" } = useTheme()
+
+  return (
+    <Sonner
+      theme={theme as ToasterProps["theme"]}
+      className="toaster group"
+      toastOptions={{
+        classNames: {
+          toast:
+            "group toast group-[.toaster]:bg-custom-dark-gray group-[.toaster]:text-custom-light-apricot group-[.toaster]:border-none group-[.toaster]:shadow-lg",
+          description: "group-[.toast]:text-custom-light-apricot/70",
+          actionButton:
+            "group-[.toast]:bg-custom-light-apricot group-[.toast]:text-custom-dark-gray",
+          cancelButton:
+            "group-[.toast]:bg-custom-light-apricot group-[.toast]:text-custom-dark-gray",
+        },
+      }}
+      {...props}
+    />
+  )
+}
+
+export { Toaster }
+
+// File: app/Home.tsx
+"use client";
+
+import AllContextsProvider from "@/components/AllContextsProvider";
+import Footer from "@/components/footer/footer";
+import { Navbar } from "@/components/navbar/navbar";
+import React, { createContext, useState } from "react";
+import { useMediaQuery } from 'usehooks-ts';
+
+
+export const Context_search = createContext(null);
+export const Context_responseDataRooms = createContext(null);
+export const Context_responseDataHotels = createContext(null);
+export const Context_responseDataWithAmenities = createContext(null);
+
+
+
+export default function Home({ children }: { children: React.ReactNode }) {
+  const [selectedCity, setSelectedCity] = useState("");
+  const [responseDataRooms, setResponseDataRooms] = useState({});
+  const [responseDataHotels, setResponseDataHotels] = useState({});
+  const [roomsWithAmenities, setRoomsWithAmenities] = useState([]);
+
+
+
+
+  const contexts = [
+    [Context_search, { selectedCity, setSelectedCity }],
+    [Context_responseDataRooms, { responseDataRooms, setResponseDataRooms }],
+    [Context_responseDataHotels, { responseDataHotels, setResponseDataHotels }],
+    [Context_responseDataWithAmenities, { roomsWithAmenities, setRoomsWithAmenities }],
+  ];
+
+
+
+  const isDesktop = useMediaQuery('(min-width: 900px)', { initializeWithValue: false });
+
+
+
+
+  return (
+    <AllContextsProvider contexts={contexts}>
+      <>
+        <Navbar />
+        {children}
+        {isDesktop ? <Footer /> : null}
+      </>
+    </AllContextsProvider>
+  );
+}
+// File: app/Reservation/page.tsx
+
+// File: app/about/firstSection.tsx
+import { Separator } from '@/components/ui/separator';
+import React from 'react';
+import { MoveDown } from 'lucide-react';
+
+
+
+
+export default function FirstSection() {
+  return (
+    <div className="h-[700px] w-full flex flex-row  justify-center items-center text-center relative" style={{ backgroundImage: 'url(https://nyc3.digitaloceanspaces.com/hotelmania/Assets/5.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className='flex h-full w-full justify-center items-center text-center bg-custom-light-apricot/70'>
+        <div className=" m-10 w-[600px] flex flex-col justify-center items-center text-center">
+          <p className="text-custom-dark-gray text-5xl">About us</p>
+          <Separator className="h-3  bg-border-none" />
+          <p className="text-custom-dark-gray text-2xl">The elegant luxury bedrooms in this gallery showcase custom interior 
+designs & decorating ideas. View pictures and find your
+ perfect luxury bedroom design.</p>
+          <Separator className="h-6  bg-border-none" />
+          <div className='flex justify-center items-center text-center h-[100px] w-[50px] border-2 border-custom-dark-gray rounded-full'>
+            <MoveDown className="w-12 h-12" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+// File: app/about/page.tsx
+import React from "react";
+import FirstSection from "./firstSection";
+import SecondSection from "./secondSection";
+
+
+export default function AboutPage() {
+  return (
+    <div>
+      <FirstSection />
+      <SecondSection />
+    </div>
+  );
+}
+
+// File: app/about/secondSection.tsx
+
+
+
+
+import Image from 'next/image';
+
+export default function SecondSection() {
+  return (
+    <div className="flex flex-wrap bg-custom-dark-gray">
+      <div className="w-[40%]  flex flex-col justify-center items-center">
+        <Image
+          src="https://nyc3.digitaloceanspaces.com/hotelmania/Assets/Screenshot%202024-10-12%20at%205.46.33%E2%80%AFPM%20%281%29.png"
+          alt="HotelMania Screenshot"
+          width={300}
+          height={600}
+        />
+        <p className="text-2xl text-custom-light-apricot p-10">A hotel finder at you fingertips</p>
+      </div>
+      <div className="w-[50%] p-10 text-custom-light-apricot">
+        <div className="w-full text-center p-5">
+          <strong className="text-3xl text-center">About HotelMania</strong>
+        </div>
+
+        <p><strong>HotelMania</strong> was founded with the vision of creating a seamless, user-friendly platform for travelers to discover and book hotels worldwide. Whether you’re booking a weekend getaway or an extended stay, we make it easy to find the perfect hotel tailored to your needs and budget.</p>
+
+        <strong>Our Mission:</strong>
+        <p>At HotelMania, our mission is to simplify the hotel booking process by offering a wide range of accommodation options at competitive prices. We aim to provide travelers with a reliable, hassle-free experience from start to finish.</p>
+
+        <strong>What We Offer:</strong>
+        <ul>
+          <li>A wide selection of hotels, ranging from budget-friendly options to luxury stays.</li>
+          <li>Special discounts and exclusive deals for registered users.</li>
+          <li>A secure platform to make and manage bookings.</li>
+          <li>24/7 customer support to assist with any questions or concerns.</li>
+        </ul>
+
+        <strong>Why Choose Us:</strong>
+        <p>We are more than just a hotel booking platform. HotelMania offers a personalized experience, ensuring that every user finds a stay that suits their preferences. We continuously work to improve our platform and build trust with our customers by maintaining transparency, competitive pricing, and excellent customer service.</p>
+
+        <strong>Our Technology:</strong>
+        <p>HotelMania is built on cutting-edge technology to ensure reliability and security. By leveraging frameworks such as React, Node.js, and secure databases, we provide a fast, responsive platform that guarantees a seamless booking experience for every user.</p>
+
+        <strong>Our Team:</strong>
+        <p>We are a group of passionate individuals dedicated to making travel easier for everyone. Our team combines expertise in software development, hospitality, and customer service to create a comprehensive platform tailored to the needs of modern travelers.</p>
+
+        <strong>Contact Us:</strong>
+        <p>If you have any questions or need assistance, feel free to reach out to us at <a href="mailto:support@hotelmania.com">support@hotelmania.com</a>. We are here to help you at every step of your journey!</p>
+
+      </div>
+    </div>
+  );
+}
+// File: app/contact/contactUs.tsx
+"use client"
+import React, { useState } from 'react';
+import { MapPin, Mail, Phone } from 'lucide-react';
+
+const ContactUs = () => {
+  const [formData, setFormData] = useState({
+    fullname: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log('Form data submitted:', formData);
+  };
+
+  return (
+    <div className="flex flex-col justify-center items-center bg-custom-dark-gray w-screen">
+      <div className="w-full mb-8 md:mb-0 ">
+        <form onSubmit={handleSubmit} className="w-full bg-custom-dark-gray rounded-lg p-8 text-custom-light-apricot placeholder:text-custom-dark-gray">
+          <div className='flex flex-row w-full gap-4'>
+            <div className="mb-6 w-full">
+              <label className="block text-sm mb-2" htmlFor="fullname">Fullname</label>
+              <input
+                type="text"
+                id="fullname"
+                name="fullname"
+                value={formData.fullname}
+                onChange={handleChange}
+                className="w-full p-3 bg-transparent text-custom-light-apricot rounded-md border-[1px] border-custom-light-apricot"
+                placeholder="e.g., Youssef Hassane"
+              />
+            </div>
+
+            <div className="mb-6 w-full">
+              <label className="block text-sm mb-2" htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full p-3 bg-transparent text-custom-light-apricot rounded-md border-[1px] border-custom-light-apricot"
+                placeholder="youssef_hassane@icloud.com"
+              />
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-sm mb-2" htmlFor="message">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full p-3 bg-transparent text-custom-light-apricot rounded-md border-[1px] border-custom-light-apricot"
+              rows="10"
+              placeholder="Your message here..."
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-custom-light-apricot text-custom-dark-gray py-3 rounded-md hover:bg-custom-light-apricot/80 transition"
+          >
+            Send Message
+          </button>
+        </form>
+      </div>
+
+      <div className="flex justify-center items-center px-8 w-full md:px-8 lg:w-[85%] lg:px-0 bg-custom-dark-gray">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110049.7389141196!2d31.2357116!3d30.0444196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145840c5b5f5b5b5%3A0x5b5b5b5b5b5b5b5b!2sCairo%2C%20Egypt!5e0!3m2!1sen!2sus!4v1633024800000!5m2!1sen!2sus"
+          width="100%"
+          height="450"
+          loading="lazy"
+          className=" w-[] flex justify-center items-center h-[500px]"
+        ></iframe>
+      </div>
+    </div>
+  );
+};
+
+export default ContactUs;
+
+// File: app/contact/firstSection.tsx
+import { Separator } from '@/components/ui/separator';
+import React from 'react';
+import { MoveDown } from 'lucide-react';
+
+
+
+
+export default function FirstSection() {
+  return (
+    <div className="h-[700px] w-full flex flex-row  justify-center items-center text-center relative" style={{ backgroundImage: 'url(https://nyc3.digitaloceanspaces.com/hotelmania/Assets/5.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className='flex h-full w-full justify-center items-center text-center bg-custom-light-apricot/70'>
+        <div className=" m-10 w-[600px] flex flex-col justify-center items-center text-center">
+          <p className="text-custom-dark-gray text-5xl">Contact us</p>
+          <Separator className="h-3  bg-border-none" />
+          <p className="text-custom-dark-gray text-2xl">The elegant luxury bedrooms in this gallery showcase custom interior designs & decorating ideas. View pictures and find your perfect luxury bedroom design.</p>
+          <Separator className="h-6  bg-border-none" />
+          <div className='flex justify-center items-center text-center h-[100px] w-[50px] border-2 border-custom-dark-gray rounded-full'>
+            <MoveDown className="w-12 h-12" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+// File: app/contact/page.tsx
+import React from "react";
+import ContactUs from "./contactUs"; // Adjust the import path based on your folder structure
+import FirstSection from "./firstSection";
+
+export default function ContactPage() {
+  return (
+    <>
+      <FirstSection />
+      <ContactUs />
+    </>
+  );
+}
+
+// File: app/explore/page.tsx
+// pages/index.tsx
+import React from "react";
+import Card from "../../components/explore/Card";
+import { Play } from 'lucide-react';
+
+
+export default function ExplorePage() {
+  return (
+    <div className="bg-custom-dark-gray text-white">
+      {/* Hero Section */}
+      <section className="relative">
+        <div className="w-full h-[700px] relative overflow-hidden">
+          <video
+            className="absolute top-0 left-0 w-full h-full object-cover"
+            src="https://nyc3.digitaloceanspaces.com/hotelmania/Assets/WhatsApp%20Video%202024-10-10%20at%207.16.57%20PM.mp4"
+            autoPlay
+            loop
+            muted
+          ></video>
+          <div className="absolute inset-0 flex justify-center items-center">
+            <div className="w-[100px] h-[100px] bg-white/60 rounded-full flex justify-center items-center ">
+              <button className="bg-white text-black flex justify-center items-center rounded-full font-bold w-[50px] h-[50px]">
+                <Play className="w-6 h-6 fill-custom-dark-gray text-custom-dark-gray" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Take a Tour Section */}
+      <section className="py-16 text-center">
+        <h2 className="text-3xl font-semibold">Take a Tour</h2>
+      </section>
+
+      {/* Cards Section */}
+      <section className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-10 px-6 lg:px-20 pb-16 h-auto">
+        <Card
+          imgSrc="https://nyc3.digitaloceanspaces.com/hotelmania/Assets/5.png"
+          imgAlt="Room"
+          title="Luxurious Rooms"
+          description="The elegant luxury bedrooms in this gallery showcase custom interior designs & decorating ideas. View pictures and find your perfect luxury bedroom design.Luxurious bedrooms that will make you never want to leave your room again. See more ideas about luxurious bedrooms, bedroom design"
+        />
+        <Card
+          imgSrc="https://nyc3.digitaloceanspaces.com/hotelmania/Assets/2fc5b56d-eee2-4626-a3ef-2a1aeee2ae66.png"
+          imgAlt="Gym"
+          title="Gym Center"
+          description="The elegant luxury bedrooms in this gallery showcase custom interior designs & decorating ideas. View pictures and find your perfect luxury bedroom design.Luxurious bedrooms that will make you never want to leave your room again. See more ideas about luxurious bedrooms, bedroom design"
+        />
+        <Card
+          imgSrc="https://nyc3.digitaloceanspaces.com/hotelmania/Assets/4b718559-1580-40b4-b11b-d7b51aa0398a.png"
+          imgAlt="Restaurant"
+          title="Restaurant"
+          description="The elegant luxury bedrooms in this gallery showcase custom interior designs & decorating ideas. View pictures and find your perfect luxury bedroom design.Luxurious bedrooms that will make you never want to leave your room again. See more ideas about luxurious bedrooms, bedroom design"
+        />
+      </section>
+    </div>
+  );
+}
+
+// File: app/globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap');
+
+.font-custom {
+  font-family: "Dancing Script", cursive;
+  font-weight: 400; 
+  font-size: 30px; 
+  line-height: 1.2; 
+  
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+// File: app/home/firstSection.tsx
+import { ComboboxDemo } from "@/components/combobox";
+import { DatePickerDemo } from "@/components/DatePicker";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { MapPin, Play } from "lucide-react";
+import { useContext, useState } from "react";
+import { Context_search, Context_responseDataRooms } from "../Home";
+import { useRouter } from 'next/navigation';
+
+// Governorate options
+const governorateOptions = [
+  { value: "cairo", label: "Cairo" },
+  { value: "giza", label: "Giza" },
+  { value: "alexandria", label: "Alexandria" },
+  { value: "minya", label: "Minya" },
+  { value: "sharqia", label: "Sharqia" },
+  { value: "suez", label: "Suez" },
+];
+
+// City options for each governorate
+const cityOptions: { [key: string]: { value: string; label: string }[] } = {
+  cairo: [
+    { value: "Nasr City", label: "Nasr City" },
+    { value: "heliopolis", label: "Heliopolis" },
+    { value: "shubra", label: "Shubra" },
+    { value: "maadi", label: "Maadi" },
+
+  ],
+  giza: [
+    { value: "6th_of_october", label: "6th of october" },
+    { value: "sheikh_zayed", label: "Sheikh Zayed" },
+    { value: "al_haram", label: "Al-Haram" },
+    { value: "imbaba", label: "Imbaba" },
+  ],
+
+  alexandria: [
+    { value: "Borg_Al_arab", label: "Borg Al arab" },
+    { value: "Abu_Qir", label: "Abu Qir" },
+    { value: "Montazah", label: "Montazah" },
+    { value: "Sidi_Gaber", label: "Sidi Gaber" },
+
+  ],
+  minya: [
+    { value: "minya", label: "Minya" },
+    { value: "mallawi", label: "Malawi" },
+    { value: "bani_mazar", label: "Beni Mazar" },
+    { value: "abu_qurqas", label: "Abu Qurqas" },
+  ],
+  sharqia: [
+    { value: "zagazig", label: "Zagazig" },
+    { value: "mit_ghamr", label: "Mit-Ghamr" },
+    { value: "10th_of_ramadan", label: "10th of Ramadan" },
+    { value: "al_ibrahimiya", label: "Al Ibrahimiya" },
+  ],
+  suez: [
+    { value: "al_ghanayen", label: "Al Ghanayen" },
+    { value: "suez", label: "Suez" },
+    { value: "faisal", label: "Faisal" },
+  ],
+};
+
+// Person options
+const personOptions = Array.from({ length: 10 }, (_, i) => ({
+  value: (i + 1).toString(),
+  label: `${i + 1} Person${i > 0 ? "s" : ""}`,
+}));
+
+
+export default function FirstSection() {
+  const router = useRouter();
+
+
+
+  const { selectedCity, setSelectedCity } = useContext(Context_search);
+  const { responseDataRooms, setResponseDataRooms } = useContext(Context_responseDataRooms);
+
+
+
+
+  const [selectedGovernorate, setSelectedGovernorate] = useState("");
+  const [selectedPerson, setSelectedPerson] = useState("");
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>();
+  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>();
+
+  const handleGovernorateChange = (value: string) => {
+    setSelectedGovernorate(value);
+    setSelectedCity(""); // Reset city when governorate changes
+  };
+
+  const handleCityChange = (value: string) => {
+    setSelectedCity(value);
+  };
+
+  const handlePersonChange = (value: string) => {
+    setSelectedPerson(value);
+  };
+
+  const cities =
+    selectedGovernorate && cityOptions[selectedGovernorate]
+      ? cityOptions[selectedGovernorate]
+      : [];
+
+  const handleSearch = async () => {
+    if (!selectedGovernorate || !selectedCity || !selectedPerson || !checkInDate || !checkOutDate) {
+      alert("Please fill in all search fields.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5001/rooms?city=Nasr%20City`);
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      setResponseDataRooms(responseData);
+      console.log("Search Response:", responseDataRooms);
+
+      router.push('/hotels');
+      
+
+    } catch (error) {
+      console.error("Error searching for a room:", error);
+      alert("An error occurred while searching for rooms. Please try again later.");
+    }
+  };
+
+
+  const handleTakeTour = async () => {
+    router.push('/explore');
+    router.refresh();
+  };
+
+  const handleBookNow = async () => {
+    router.push('/rooms');
+    router.refresh();
+  };
+
+
+  return (
+    <div className="h-[650px] w-full bg-custom-light-apricot flex flex-row px-[100px] relative">
+      {/* Left Side */}
+      <div className="flex h-full w-[70%] justify-center items-center">
+        <div className="h-[90%] w-[90%]">
+          <p className="flex font-custom text-custom-light-apricot bg-custom-dark-gray w-[220px] h-[70px] justify-center items-center rounded-md">
+            HotelMania
+          </p>
+          <Separator className="h-5 bg-border-none" />
+          <div className="w-full max-w-[400px] h-auto">
+            <p className="text-5xl font-bold text-custom-dark-gray">
+              Hotel for every moment rich in emotion
+            </p>
+          </div>
+          <Separator className="h-8 bg-border-none" />
+          <div className="w-full max-w-[400px] h-auto">
+            <p className="text-xl text-custom-dark-gray">
+              Every moment feels like the first time in paradise view
+            </p>
+          </div>
+          <Separator className="h-8 bg-border-none" />
+          <div className="w-full max-w-[400px] h-auto flex flex-row gap-9">
+            <Button onClick={handleBookNow} className="rounded-full w-[150px] h-[50px] bg-custom-dark-gray text-custom-light-apricot">
+              Book now
+            </Button>
+            <div className="flex justify-center items-center gap-2">
+              <Button onClick={handleTakeTour} className="rounded-full w-[50px] h-[50px] bg-custom-dark-gray">
+                <Play
+                  className="text-custom-light-apricot fill-current"
+                  size={20}
+                />
+              </Button>
+              Take a tour
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Right Side */}
+      <div className="flex h-full w-1/2 ">
+        <img
+          src="https://nyc3.digitaloceanspaces.com/hotelmania/Assets/Screenshot%202024-10-08%20at%209.04.31%E2%80%AFAM.png"
+          alt="home"
+          className=""
+        />
+      </div>
+      {/* Search Bar */}
+      <div className="w-[85%] h-[100px] absolute bg-custom-dark-gray bottom-10 left-1/2 transform -translate-x-1/2 rounded-md">
+        <div className="flex flex-row gap-4 w-full h-full px-5 py-5">
+          {/* Governorate Combobox */}
+          <div className="w-full h-full flex flex-row justify-center items-center">
+            <MapPin
+              className="text-custom-light-apricot "
+              size={30}
+              width={40}
+            />
+            <ComboboxDemo
+              name="Governorate"
+              options={governorateOptions}
+              value={selectedGovernorate}
+              onChange={handleGovernorateChange}
+            />
+          </div>
+
+          {/* City Combobox */}
+          <div className="w-full h-full flex flex-row justify-center items-center">
+            <MapPin
+              className="text-custom-light-apricot "
+              size={30}
+              width={40}
+            />
+            <ComboboxDemo
+              name="City"
+              options={cities}
+              value={selectedCity}
+              onChange={handleCityChange}
+              disabled={!selectedGovernorate}
+            />
+          </div>
+
+          {/* Person Combobox */}
+          <div className="w-full h-full flex flex-row justify-center items-center">
+            <MapPin
+              className="text-custom-light-apricot "
+              size={30}
+              width={40}
+            />
+            <ComboboxDemo
+              name="Person"
+              options={personOptions}
+              value={selectedPerson}
+              onChange={handlePersonChange}
+            />
+          </div>
+
+          {/* Check-in Date */}
+          <div className="w-full h-full flex flex-row justify-center items-center">
+            <DatePickerDemo
+              text="Check in"
+              selectedDate={checkInDate}
+              onDateChange={setCheckInDate}
+            />
+          </div>
+
+          {/* Check-out Date */}
+          <div className="w-full h-full flex flex-row justify-center items-center">
+            <DatePickerDemo
+              text="Check out"
+              selectedDate={checkOutDate}
+              onDateChange={setCheckOutDate}
+            />
+          </div>
+
+          {/* Search Button */}
+          <div className="w-full h-full flex flex-row justify-center items-center">
+            <button
+              onClick={handleSearch}
+              className="w-[200px] h-[50px] rounded-md bg-custom-light-apricot text-custom-dark-gray hover:bg-custom-light-apricot/70 focus:outline-none"
+            >
+              Search For A Room
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+// File: app/home/fourthSection.tsx
+
+import CardInTheFourthSection from '@/components/cardInTheFourthSection';
+import { Avatar } from '@/components/ui/avatar';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { CircleUser, Star } from 'lucide-react';
+
+
+
+
+
+
+
+
+export default function FourthSection() {
+
+
+
+  return (
+    <div className="h-auto w-full bg-custom-dark-gray flex flex-col px-[100px] justify-center items-center text-center">
+      <div className="m-[50px]">
+        <p className="text-custom-light-apricot text-5xl">Reviews</p>
+      </div>
+      <div className='flex flex-row w-full pr-0'>
+
+        <ScrollArea className="w-full overflow-auto">
+          <div className='flex flex-row gap-4'>
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+          <CardInTheFourthSection name="Youssef Hassane" text="The service at the Hotel Monteleone was exceptional. There was absolutely no issue that was not addressed timely and with satisfactory results. We were particulary impressed with how the hotel staff anticipated our needs (periodically coming by the Board Room to check with us). Numerous conference attendees commented on the quality of the food, the quality of the service and overall positive attitude toward the conference site. Particular noteworthy is the longevity of the staff and that sense of investment in the success of every event. I usually offer suggestions for improvements (part of being a marketing professor), but there is absolutely nothing that could be improved – you have set the bar very high." date="April 12, 2022" />
+
+          </div>
+          <ScrollBar orientation="horizontal" />
+
+        </ScrollArea>
+      </div>
+
+    </div>
+  )
+}
+// File: app/home/page.tsx
+// File: app/home/page.tsx
+"use client";
+
+import FirstSection from "./firstSection";
+import FourthSection from "./fourthSection";
+import SecondSection from "./secondSection";
+import ThirdSection from "./thirdSection";
+
+
+
+export default function HomePage() {
+
+
+  return (
+    <div>
+      <FirstSection />
+      <SecondSection />
+      <ThirdSection />
+      <FourthSection />
+    </div>
+  );
+}
+
+// File: app/home/secondSection.tsx
+import CardInTheSecondSection from "@/components/cardInTheSecondSection";
+import { Separator } from "@/components/ui/separator";
+import { Wifi, Dumbbell, UtensilsCrossed, Gamepad2, Lightbulb, WashingMachine, SquareParking, Waves } from 'lucide-react';
+
+
+
+export default function SecondSection() {
+
+
+
+  return (
+    <div className="h-auto w-full bg-custom-dark-gray flex flex-wrap md:px-[100px] px-[1px] justify-center items-center text-center md:p-[50px] gap-10">
+      <div className="h-full w-full justify-center items-center text-center">
+        <div className=" m-10">
+          <p className="text-custom-light-apricot text-5xl">Amenities at Your Service</p>
+          <Separator className="h-3 bg-border-none" />
+          <p className="text-custom-light-apricot text-2xl">We offer modern (5 star) hotel facilities for your comfort.</p>
+        </div>
+        <div className="flex h-auto w-auto justify-center items-center text-center">
+          <div className="h-auto w-full bg-custom-dark-gray flex flex-wrap  justify-center items-center text-center p-[50px] gap-10">
+            <CardInTheSecondSection text="Swimming Pool" logo={<Waves size={50} className="h-30 w-30 " />} />
+            <CardInTheSecondSection text="Wifi" logo={<Wifi size={50} className="h-30 w-30 " />} />
+            <CardInTheSecondSection text="Breakfast" logo={<UtensilsCrossed size={50} className="h-30 w-30 " />} />
+            <CardInTheSecondSection text="Gym" logo={<Dumbbell size={50} className="h-30 w-30 " />} />
+            <CardInTheSecondSection text="Game Center" logo={<Gamepad2 size={50} className="h-30 w-30 " />} />
+            <CardInTheSecondSection text="24/7 Light" logo={<Lightbulb size={50} className="h-30 w-30 " />} />
+            <CardInTheSecondSection text="Laundry" logo={<WashingMachine size={50} className="h-30 w-30 " />} />
+            <CardInTheSecondSection text="Parking Space" logo={<SquareParking size={50} className="h-30 w-30 " />} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+// File: app/home/thirdSection.tsx
+import CardInTheThirdSection from '@/components/cardInTheThirdSection';
+import { Separator } from '@/components/ui/separator';
+import React, { useContext } from 'react';
+import { Context_responseDataHotels } from '../Home';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+
+
+
+export default function ThirdSection() {
+  const { responseDataHotels, setResponseDataHotels } = useContext(Context_responseDataHotels);
+
+  const defaultData = async () => {
+    try {
+      const response = await fetch(`http://localhost:5001/hotels?governate=Cairo`);
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+
+      setResponseDataHotels(responseData);
+
+    } catch (error) {
+      console.error("Error searching for rooms:", error);
+      alert("An error occurred while searching for rooms. Please try again later.");
+    }
+  };
+
+
+  if (!Array.isArray(responseDataHotels) || responseDataHotels.length === 0) {
+    defaultData();
+  }
+
+  return (
+    <div className="h-full w-full flex flex-row  justify-center items-center text-center relative" style={{ backgroundImage: 'url(https://nyc3.digitaloceanspaces.com/hotelmania/Assets/1.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className='h-full w-full justify-center items-center text-center bg-custom-light-apricot/60 md:px-[100px] px-[1px]'>
+        <div className=" m-10">
+          <p className="text-custom-dark-gray text-5xl">Amenities at Your Service</p>
+          <Separator className="h-3  bg-border-none" />
+          <p className="text-custom-dark-gray text-2xl">We offer modern (5 star) hotel facilities for your comfort.</p>
+          <Separator className="h-6  bg-border-none" />
+        </div>
+        <div className='flex flex-row w-full pr-0'>
+          <ScrollArea className="w-full overflow-auto">
+            <div className='flex flex-row gap-4 m-5 justify-center items-center '>
+              {Array.isArray(responseDataHotels) && responseDataHotels.length > 0 ? (
+                responseDataHotels.map((room) => (
+                  <CardInTheThirdSection
+                    key={room.id}
+                    text={room.name}
+                    imageURL={room.imageURL}
+                    numbersOfRooms={room.rooms.length}
+                  />
+                ))
+              ) : (
+                <p>Loading...</p>
+              )}
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// File: app/hotels/firstSection.tsx
+import CardInTheThirdSection from '@/components/cardInTheThirdSection';
+import { Separator } from '@/components/ui/separator';
+import React from 'react';
+import { MoveDown } from 'lucide-react';
+
+
+
+
+export default function FirstSection() {
+  return (
+    <div className="h-[700px] w-full flex flex-row  justify-center items-center text-center relative" style={{ backgroundImage: 'url(https://nyc3.digitaloceanspaces.com/hotelmania/Assets/5.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className='flex h-full w-full justify-center items-center text-center bg-custom-light-apricot/70'>
+        <div className=" m-10 w-[600px] flex flex-col justify-center items-center text-center">
+          <p className="text-custom-dark-gray text-5xl">Hotels</p>
+          <Separator className="h-3  bg-border-none" />
+          <p className="text-custom-dark-gray text-2xl">The elegant luxury bedrooms in this gallery showcase custom interior designs & decorating ideas. View pictures and find your perfect luxury bedroom design.</p>
+          <Separator className="h-6  bg-border-none" />
+          <div className='flex justify-center items-center text-center h-[100px] w-[50px] border-2 border-custom-dark-gray rounded-full'>
+            <MoveDown className="w-12 h-12" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+// File: app/hotels/page.tsx
+// File: app/home/page.tsx
+"use client";
+
+import FirstSection from "./firstSection";
+import SecondSection from "./secondSection";
+
+
+
+
+export default function HotelsPage() {
+  return (
+    <div>
+      <FirstSection />
+      <SecondSection />
+
+    </div>
+  );
+}
+
+
+
+// File: app/hotels/secondSection.tsx
+import CardInTheSecondSectionOfHotelsPage from "@/components/cardInTheSecondSectionOfHotelsPage";
+import { useContext } from "react";
+import { Context_responseDataHotels } from "../Home";
+
+function SecondSection() {
+  const { responseDataHotels = [], setResponseDataHotels } = useContext(Context_responseDataHotels);
+
+  const defaultData = async () => {
+    try {
+      const response = await fetch(`http://localhost:5001/hotels?governate=Cairo`);
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+
+      setResponseDataHotels(responseData);
+
+    } catch (error) {
+      console.error("Error searching for rooms:", error);
+      alert("An error occurred while searching for rooms. Please try again later.");
+    }
+  };
+
+
+  if (!Array.isArray(responseDataHotels) || responseDataHotels.length === 0) {
+    defaultData();
+  }
+
+
+  return (
+    <div className="h-auto w-full bg-custom-dark-gray flex flex-wrap px-[100px] justify-center items-center text-center p-[50px] gap-10">
+
+
+      {Array.isArray(responseDataHotels) && responseDataHotels.length > 0 ? (
+        responseDataHotels.map((room) => (
+          <CardInTheSecondSectionOfHotelsPage
+            key={room.id}
+            text={room.name}
+            imageURL={room.imageURL}
+            numbersOfRooms={room.rooms.length}
+            where="hotel"
+            Available={""}
+            price={""}
+          />
+        ))
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+}
+
+export default SecondSection;
+
+// File: app/layout.tsx
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
+import { Toaster } from "@/components/ui/sonner"
+
+import Home from "./Home";
+
+
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
+
+export const metadata: Metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className="font-sans bg-white text-black">
+        <Home>
+          {children}
+        </Home>
+        <Toaster />
+      </body>
+    </html>
+  );
+}
+
+// File: app/login/page.tsx
+"use client";
+import { Separator } from '@radix-ui/react-separator';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useState } from 'react';
+
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "email") setEmail(value);
+    else setPassword(value);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Login data: ', { email, password });
+    // Login logic
+  };
+
+  return (
+    <main className="h-full p-[100px] flex items-center justify-center bg-custom-dark-gray p-6 relative overflow-hidden">
+      <div className="bg-custom-light-apricot p-8 rounded-lg shadow-md w-full max-w-[800px] z-50 flex items-center justify-center">
+        <div className="w-1/2 flex items-center justify-center ">
+          <Image
+            src="https://nyc3.digitaloceanspaces.com/hotelmania/Assets/Screenshot%202024-10-12%20at%205.46.33%E2%80%AFPM%20%281%29.png"
+            alt="logo"
+            className="object-contain rounded-md"
+            width={200}
+            height={400}
+            priority
+          />
+        </div>
+        <div className="w-1/2 p-8 rounded-lg bg-custom-light-apricot z-50 relative flex-col items-center justify-center">
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={handleInputChange}
+            placeholder="Email"
+            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
+          />
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={handleInputChange}
+            placeholder="Password"
+            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
+          />
+          <button
+            onClick={handleSubmit}
+            className="w-full mb-2 p-3 rounded-md bg-custom-dark-gray text-custom-light-apricot hover:bg-custom-dark-gray/90 focus:outline-none"
+          >
+            Sign In
+          </button>
+          
+          <h1 className='text-custom-dark-gray text-center text-sm pt-2'>Don&apos;t have account? <Link className='' href={'/signup'}>SignUp</Link></h1>
+          <h1 className='text-custom-dark-gray text-center text-sm pt-2'>Forgot Password? <Link className='text-custom-yellow' href={'/forgot-password'}>Reset</Link></h1>
+
+        </div>
+      </div>
+    </main>
+  );
+}
+
+// File: app/page.tsx
+
+import React from "react";
+import HomePage from "./home/page";
+
+export default function Home() {
+  return (
+    <>
+      <HomePage />
+    </>
+  );
+}
+
+// File: app/rooms/firstSection.tsx
+import CardInTheThirdSection from '@/components/cardInTheThirdSection';
+import { Separator } from '@/components/ui/separator';
+import React from 'react';
+import { MoveDown } from 'lucide-react';
+
+
+
+
+export default function FirstSection() {
+  return (
+    <div className="h-[700px] w-full flex flex-row  justify-center items-center text-center relative" style={{ backgroundImage: 'url(https://nyc3.digitaloceanspaces.com/hotelmania/Assets/5.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className='flex h-full w-full justify-center items-center text-center bg-custom-light-apricot/70'>
+        <div className=" m-10 w-[600px] flex flex-col justify-center items-center text-center">
+          <p className="text-custom-dark-gray text-5xl">Hotels</p>
+          <Separator className="h-3  bg-border-none" />
+          <p className="text-custom-dark-gray text-2xl">The elegant luxury bedrooms in this gallery showcase custom interior designs & decorating ideas. View pictures and find your perfect luxury bedroom design.</p>
+          <Separator className="h-6  bg-border-none" />
+          <div className='flex justify-center items-center text-center h-[100px] w-[50px] border-2 border-custom-dark-gray rounded-full'>
+            <MoveDown className="w-12 h-12" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+// File: app/rooms/page.tsx
+// File: app/home/page.tsx
+"use client";
+
+import FirstSection from "./firstSection";
+import SecondSection from "./secondSection";
+
+
+
+
+export default function HotelsPage() {
+  return (
+    <div>
+      <FirstSection />
+      <SecondSection />
+
+    </div>
+  );
+}
+
+
+
+// File: app/rooms/secondSection.tsx
+import CardInTheSecondSectionOfHotelsPage from "@/components/cardInTheSecondSectionOfHotelsPage";
+import { useContext, useEffect, useState } from "react";
+import { Context_responseDataRooms, Context_responseDataWithAmenities } from "../Home";
+
+function SecondSection() {
+  const { responseDataRooms = [], setResponseDataRooms } = useContext(Context_responseDataRooms);
+  const {roomsWithAmenities, setRoomsWithAmenities} = useContext(Context_responseDataWithAmenities);
+
+  const fetchAmenities = async (roomID) => {
+    try {
+      const response = await fetch(`http://localhost:5001/rooms/${roomID}/amenities`);
+      if (!response.ok) {
+        throw new Error(`Error fetching amenities for room ${roomID}: ${response.status}`);
+      }
+      const amenities = await response.json();
+      return amenities;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  };
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch(`http://localhost:5001/rooms?city=Heliopolis`);
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const roomsData = await response.json();
+      const roomsWithAmenitiesPromises = roomsData.map(async (room) => {
+        const amenities = await fetchAmenities(room.id); 
+        return { ...room, amenities };
+      });
+
+      const roomsWithAmenitiesData = await Promise.all(roomsWithAmenitiesPromises);
+      setRoomsWithAmenities(roomsWithAmenitiesData);
+    } catch (error) {
+      console.error("Error searching for rooms:", error);
+      alert("An error occurred while searching for rooms. Please try again later.");
+    }
+  };
+
+    if (!Array.isArray(responseDataRooms) || responseDataRooms.length === 0) {
+      handleSearch();
+    }
+
+
+  return (
+    <div className="h-auto w-full bg-custom-dark-gray flex flex-wrap px-[100px] justify-center items-center text-center p-[50px] gap-10">
+      {roomsWithAmenities.length > 0 ? (
+        roomsWithAmenities.map((room) => (
+          <CardInTheSecondSectionOfHotelsPage
+            key={room.id}
+            text={room.name}
+            Available={room.isReserved ? "No" : "Yes"}
+            price={room.price}
+            imageURL={room.imageURL}
+            amenities={room.amenities} // Pass amenities here
+            where="room"
+          />
+        ))
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+}
+
+export default SecondSection;
+
+// File: app/signup/page.tsx
+"use client";
+import { Separator } from '@radix-ui/react-separator';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useState } from 'react';
+
+export default function SignUpPage() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Sign Up data: ', formData);
+    // Sign Up logic
+  };
+
+  return (
+    <main className="h-full p-[100px] flex items-center justify-center bg-custom-dark-gray p-6 relative overflow-hidden">
+      <div className="bg-custom-light-apricot p-8 rounded-lg shadow-md w-full max-w-[800px] z-50 flex items-center justify-center">
+        <div className="w-1/2 flex items-center justify-center">
+          <Image
+            src="https://nyc3.digitaloceanspaces.com/hotelmania/Assets/Screenshot%202024-10-12%20at%205.46.33%E2%80%AFPM%20%281%29.png"
+            alt="logo"
+            className="object-contain rounded-md"
+            width={200}
+            height={400}
+            priority
+          />
+        </div>
+        <Separator orientation="vertical" className="h-[100px] w-[10px]" />
+
+        <div className="w-1/2 p-8 rounded-lg bg-custom-light-apricot z-50 relative flex-col items-center justify-center">
+          <div className='flex flex-row gap-1'>
+          <input
+            type="text"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleInputChange}
+            placeholder="First Name"
+            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
+          />
+          <input
+            type="text"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleInputChange}
+            placeholder="Last Name"
+            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
+          />
+          </div>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="Email"
+            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
+          />
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            placeholder="Password"
+            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
+          />
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleInputChange}
+            placeholder="Confirm Password"
+            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
+          />
+          <button
+            onClick={handleSubmit}
+            className="w-full mb-2 p-3 rounded-md bg-custom-dark-gray text-custom-light-apricot hover:bg-custom-dark-gray/90 focus:outline-none"
+          >
+            Sign Up
+          </button>
+
+          <h1 className="text-custom-dark-gray text-center text-sm pt-2">
+            Already have an account?{' '}
+            <Link href={'/login'} className="text-custom-yellow hover:text-custom-yellow/80">
+              Sign In
+            </Link>
+          </h1>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+// File: types/tsconfig.json
+

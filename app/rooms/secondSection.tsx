@@ -1,10 +1,10 @@
 import CardInTheSecondSectionOfHotelsPage from "@/components/cardInTheSecondSectionOfHotelsPage";
 import { useContext, useEffect, useState } from "react";
-import { Context_responseDataRooms } from "../Home";
+import { Context_responseDataRooms, Context_responseDataWithAmenities } from "../Home";
 
 function SecondSection() {
   const { responseDataRooms = [], setResponseDataRooms } = useContext(Context_responseDataRooms);
-  const [roomsWithAmenities, setRoomsWithAmenities] = useState([]); // State to hold rooms with their amenities
+  const {roomsWithAmenities, setRoomsWithAmenities} = useContext(Context_responseDataWithAmenities);
 
   const fetchAmenities = async (roomID) => {
     try {
@@ -30,23 +30,22 @@ function SecondSection() {
 
       const roomsData = await response.json();
       const roomsWithAmenitiesPromises = roomsData.map(async (room) => {
-        const amenities = await fetchAmenities(room.id); // Fetch amenities for each room
-        return { ...room, amenities }; // Return room with amenities included
+        const amenities = await fetchAmenities(room.id); 
+        return { ...room, amenities };
       });
 
       const roomsWithAmenitiesData = await Promise.all(roomsWithAmenitiesPromises);
-      setRoomsWithAmenities(roomsWithAmenitiesData); // Set rooms with amenities
+      setRoomsWithAmenities(roomsWithAmenitiesData);
     } catch (error) {
       console.error("Error searching for rooms:", error);
       alert("An error occurred while searching for rooms. Please try again later.");
     }
   };
 
-  useEffect(() => {
     if (!Array.isArray(responseDataRooms) || responseDataRooms.length === 0) {
       handleSearch();
     }
-  }, [responseDataRooms]);
+
 
   return (
     <div className="h-auto w-full bg-custom-dark-gray flex flex-wrap px-[100px] justify-center items-center text-center p-[50px] gap-10">

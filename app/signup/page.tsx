@@ -4,25 +4,53 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
-export default function SignUpPage() {
+export default function SignUpForm() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: ""
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Sign Up data: ', formData);
-    // Sign Up logic
+  
+    const formBody = Object.keys(formData)
+      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(formData[key]))
+      .join('&');
+  
+    try {
+      const response = await fetch('http://localhost:5001/user/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',  // URL-encoded content type
+        },
+        body: formBody,  // Send URL-encoded data
+      });
+  
+      if (response.ok) {
+        console.log('Signup successful');
+        alert('Signup successful!');
+      } else if (response.status === 409) {
+        console.error('Email already in use');
+        alert('Email is already in use. Please use a different email.');
+      } else {
+        const errorData = await response.json();
+        console.error('Signup failed', errorData);
+        alert('Signup failed: ' + errorData.error);
+      }
+    } catch (error) {
+      console.error('Error during signup', error);
+      alert('An error occurred: ' + error.message);
+    }
   };
+  
+
+
 
   return (
     <main className="h-full p-[100px] flex items-center justify-center bg-custom-dark-gray p-6 relative overflow-hidden">
@@ -41,28 +69,28 @@ export default function SignUpPage() {
 
         <div className="w-1/2 p-8 rounded-lg bg-custom-light-apricot z-50 relative flex-col items-center justify-center">
           <div className='flex flex-row gap-1'>
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            placeholder="First Name"
-            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
-          />
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
-            placeholder="Last Name"
-            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
-          />
+            <input
+              type="text"
+              name="firstname"
+              value={formData.firstname}
+              onChange={handleChange}
+              placeholder="First Name"
+              className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
+            />
+            <input
+              type="text"
+              name="lastname"
+              value={formData.lastname}
+              onChange={handleChange}
+              placeholder="Last Name"
+              className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
+            />
           </div>
           <input
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleInputChange}
+            onChange={handleChange}
             placeholder="Email"
             className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
           />
@@ -70,16 +98,8 @@ export default function SignUpPage() {
             type="password"
             name="password"
             value={formData.password}
-            onChange={handleInputChange}
+            onChange={handleChange}
             placeholder="Password"
-            className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
-            placeholder="Confirm Password"
             className="mb-4 w-full p-3 rounded-md border border-gray-700 bg-custom-dark-gray text-custom-light-apricot placeholder-gray-500 focus:outline-none focus:border-custom-yellow"
           />
           <button
