@@ -21,8 +21,8 @@ const ContactUs = () => {
 
   return (
     <div className="flex flex-col justify-center items-center bg-custom-dark-gray w-screen">
-      <div className="w-full mb-8 md:mb-0 ">
-        <form onSubmit={handleSubmit} className="w-full bg-custom-dark-gray rounded-lg p-8 text-custom-light-apricot placeholder:text-custom-dark-gray">
+      <div className="w-full mb-8 md:mb-0 flex justify-center items-center">
+        <form onSubmit={handleSubmit} className="bg-custom-dark-gray rounded-lg p-8 text-custom-light-apricot placeholder:text-custom-dark-gray px-8 w-full md:px-8 lg:w-[85%] lg:px-0">
           <div className='flex flex-row w-full gap-4'>
             <div className="mb-6 w-full">
               <label className="block text-sm mb-2" htmlFor="fullname">Fullname</label>

@@ -1,4 +1,3 @@
-
 import { NavbarButton } from "./navbar-button";
 import { NavbarItems } from "@/types";
 import Link from "next/link";
@@ -6,10 +5,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Avatar } from "../ui/avatar";
 import { Avatar as AvatarI } from "../ui/avatarImage";
-import { LogOut, UserCog, UserRoundPlus, Hotel, Headset, Icon } from "lucide-react";
+import { LogOut, UserCog, UserRoundPlus } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from 'react';
-import { Separator } from "../ui/separator";
 
 
 interface NavbarProps {
@@ -73,7 +71,7 @@ export function NavbarDes(props: NavbarProps) {
 									<NavbarButton
 										size='sm'
 										className='group w-full hover:bg-custom-dark-gray'
-										
+
 									>
 										<div className='flex justify-between '>
 											<LogOut className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
@@ -92,35 +90,8 @@ export function NavbarDes(props: NavbarProps) {
 										</div>
 									</NavbarButton>
 								</Link>
-
-								<Separator />
-
-								<NavbarButton
-									size='sm'
-									className='group w-full hover:bg-custom-dark-gray'
-									onClick={() => { }}
-								>
-									<div className='flex justify-between '>
-										<Headset className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
-										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Help Center</p>
-									</div>
-								</NavbarButton>
-
-								<NavbarButton
-									size='sm'
-									className='group w-full hover:bg-custom-dark-gray'
-									onClick={() => { }}
-								>
-									<div className='flex justify-between '>
-										<Hotel className="group-hover:text-custom-light-apricot text-white mt-[5px]" size={20} />
-										<p className={`text-white group-hover:text-custom-light-apricot pl-2`}>Hosting resources</p>
-									</div>
-								</NavbarButton>
-
 							</div>
 						</PopoverContent>
-
-
 					</Popover>
 				</div>
 			</div>

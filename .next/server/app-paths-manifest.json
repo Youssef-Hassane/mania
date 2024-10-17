@@ -1,8 +1,8 @@
 {
-  "/signup/page": "app/signup/page.js",
-  "/login/page": "app/login/page.js",
-  "/page": "app/page.js",
   "/explore/page": "app/explore/page.js",
+  "/page": "app/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/rooms/page": "app/rooms/page.js",
   "/about/page": "app/about/page.js",
-  "/contact/page": "app/contact/page.js"
+  "/login/page": "app/login/page.js"
 }
