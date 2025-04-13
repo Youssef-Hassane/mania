@@ -20,6 +20,7 @@ export default function ThirdSection() {
       const responseData = await response.json();
 
       setResponseDataHotels(responseData);
+      console.log(responseData);
 
     } catch (error) {
       console.error("Error searching for rooms:", error);

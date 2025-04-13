@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Play } from "lucide-react";
 import { useContext, useState } from "react";
-import { Context_search, Context_responseDataRooms } from "../Home";
+import { Context_search, Context_responseDataRooms, Context_responseDataWithAmenities } from "../Home";
 import { useRouter } from 'next/navigation';
+import Image from "next/image";
 
 // Governorate options
 const governorateOptions = [
@@ -69,8 +70,7 @@ const personOptions = Array.from({ length: 10 }, (_, i) => ({
 export default function FirstSection() {
   const router = useRouter();
 
-
-
+  const { roomsWithAmenities, setRoomsWithAmenities } = useContext(Context_responseDataWithAmenities);
   const { selectedCity, setSelectedCity } = useContext(Context_search);
   const { responseDataRooms, setResponseDataRooms } = useContext(Context_responseDataRooms);
 
@@ -107,18 +107,24 @@ export default function FirstSection() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/rooms?city=Nasr%20City`);
+      const parameter = encodeURIComponent(selectedCity)
+        .replace('_', ' ');
+      const searchUrl = `http://localhost:5001/rooms?city=${parameter}`
+      const response = await fetch(searchUrl);
 
       if (!response.ok) {
+        console.log(response);
         throw new Error(`Error: ${response.status}`);
       }
 
       const responseData = await response.json();
-      setResponseDataRooms(responseData);
-      console.log("Search Response:", responseDataRooms);
+      const { data: { cityId: { id }, rooms } } = responseData;
+      // setResponseDataRooms(rooms);
+      setRoomsWithAmenities(rooms);
+      console.log("Search Response:", responseData, id, rooms);
 
-      router.push('/hotels');
-      
+      router.push(`/hotels/${id}`);
+
 
     } catch (error) {
       console.error("Error searching for a room:", error);
@@ -177,9 +183,11 @@ export default function FirstSection() {
       </div>
       {/* Right Side */}
       <div className="flex h-full w-1/2 ">
-        <img
+        <Image
           src="https://nyc3.digitaloceanspaces.com/hotelmania/Assets/Screenshot%202024-10-08%20at%209.04.31%E2%80%AFAM.png"
           alt="home"
+          width={650}
+          height={500}
           className=""
         />
       </div>
