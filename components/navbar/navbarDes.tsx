@@ -50,7 +50,7 @@ export function NavbarDes(props: NavbarProps) {
 				{/* user profile */}
 				<div className=' px-3 bg-custom-dark'>
 
-					<Popover >
+					{/* <Popover >
 						<PopoverTrigger asChild>
 							<Button variant='none' className='group w-full justify-start '>
 								<div className='flex justify-between items-center '>
@@ -58,7 +58,6 @@ export function NavbarDes(props: NavbarProps) {
 										<Avatar className='h-10 w-10'>
 											<UserCog className="group-hover:text-custom-light-apricot text-white" size={30} />
 										</Avatar>
-										{/* <span>{'Youssef Hassane'}</span> */}
 									</div>
 								</div>
 							</Button>
@@ -92,7 +91,7 @@ export function NavbarDes(props: NavbarProps) {
 								</Link>
 							</div>
 						</PopoverContent>
-					</Popover>
+					</Popover> */}
 				</div>
 			</div>
 

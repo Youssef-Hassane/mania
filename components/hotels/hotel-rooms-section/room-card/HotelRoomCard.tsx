@@ -1,6 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { Tv, Wifi, ShowerHead } from 'lucide-react';
-import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../../../ui/scroll-area";
+import Image from "next/image";
 
 interface CardProps {
   text: string;
@@ -13,12 +14,12 @@ interface CardProps {
 
 }
 
-export default function CardInTheSecondSectionOfHotelsPage({ text, Available, price, imageURL, numbersOfRooms, amenities, where }: CardProps) {
+export default function HotelRoomCard({ text, Available, price, imageURL, numbersOfRooms, amenities, where }: CardProps) {
   return (
     <div className="w-[450px] h-auto flex flex-col bg-custom-light-apricot rounded-md">
       {/* Apply the background color and set the image */}
       <div className="w-[450px] h-[250px] rounded-t-md bg-[#F8CBA4]">
-        <img className="w-full h-full object-cover min-h-[250px] rounded-t-md" src={imageURL} alt="" />
+        <Image className="w-full h-full object-cover min-h-[250px] rounded-t-md" src={imageURL} alt="Hotel image" width={450} height={250} />
       </div>
 
       <div className="px-6 py-3">
@@ -57,12 +58,14 @@ export default function CardInTheSecondSectionOfHotelsPage({ text, Available, pr
                       {amenity.iconURL ? (
                         <CircularCard
                           util={
-                            <img
+                            <Image
                               src={amenity.iconURL}
+                              width={24}
+                              height={24}
                               className="w-6 h-6"
                               alt={amenity.name}
-                              style={{ filter: 'invert(87%) sepia(29%) saturate(575%) hue-rotate(323deg) brightness(100%) contrast(92%)' }} 
-                              />
+                              style={{ filter: 'invert(87%) sepia(29%) saturate(575%) hue-rotate(323deg) brightness(100%) contrast(92%)' }}
+                            />
                           }
                         />
                       ) : null}
