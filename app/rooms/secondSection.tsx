@@ -1,57 +1,50 @@
-import CardInTheSecondSectionOfHotelsPage from "@/components/cardInTheSecondSectionOfHotelsPage";
+import HotelRoomCard from "@/components/hotels/hotel-rooms-section/room-card/HotelRoomCard";
 import { useContext, useEffect, useState } from "react";
 import { Context_responseDataRooms, Context_responseDataWithAmenities } from "../Home";
 
 function SecondSection() {
   const { responseDataRooms = [], setResponseDataRooms } = useContext(Context_responseDataRooms);
-  const {roomsWithAmenities, setRoomsWithAmenities} = useContext(Context_responseDataWithAmenities);
+  const { roomsWithAmenities, setRoomsWithAmenities } = useContext(Context_responseDataWithAmenities);
+  const [paginationState, setPaginationState] = useState({
+    offset: 0,
+    limit: 10,
+  });
 
-  const fetchAmenities = async (roomID) => {
+  const fetchData = async () => {
     try {
-      const response = await fetch(`http://localhost:5001/rooms/${roomID}/amenities`);
-      if (!response.ok) {
-        throw new Error(`Error fetching amenities for room ${roomID}: ${response.status}`);
-      }
-      const amenities = await response.json();
-      return amenities;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
-
-  const handleSearch = async () => {
-    try {
-      const response = await fetch(`http://localhost:5001/rooms?city=Heliopolis`);
+      const response = await fetch(`http://localhost:5001/rooms/`);
 
       if (!response.ok) {
+        console.log(response);
         throw new Error(`Error: ${response.status}`);
       }
 
-      const roomsData = await response.json();
-      const roomsWithAmenitiesPromises = roomsData.map(async (room) => {
-        const amenities = await fetchAmenities(room.id); 
-        return { ...room, amenities };
-      });
+      const responseData = await response.json();
+      console.log(responseData);
+      const { data: { rooms: roomsData }, offset, limit } = responseData;
+      setRoomsWithAmenities(roomsData);
+      setPaginationState({
+        offset,
+        limit
+      })
 
-      const roomsWithAmenitiesData = await Promise.all(roomsWithAmenitiesPromises);
-      setRoomsWithAmenities(roomsWithAmenitiesData);
     } catch (error) {
       console.error("Error searching for rooms:", error);
       alert("An error occurred while searching for rooms. Please try again later.");
     }
   };
 
-    if (!Array.isArray(responseDataRooms) || responseDataRooms.length === 0) {
-      handleSearch();
-    }
+  useEffect(() => {
+    fetchData();
+  }, [])
 
+  console.log(responseDataRooms, roomsWithAmenities);
 
   return (
     <div className="h-auto w-full bg-custom-dark-gray flex flex-wrap px-[100px] justify-center items-center text-center p-[50px] gap-10">
       {roomsWithAmenities.length > 0 ? (
         roomsWithAmenities.map((room) => (
-          <CardInTheSecondSectionOfHotelsPage
+          <HotelRoomCard
             key={room.id}
             text={room.name}
             Available={room.isReserved ? "No" : "Yes"}
